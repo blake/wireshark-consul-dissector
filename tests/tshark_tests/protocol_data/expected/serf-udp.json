@@ -1,0 +1,1033 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "0",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "1ee8d1c25449",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "1ee8d1c25449"
+                  }
+                },
+                "": {
+                  "msgpack.string": "SeqNo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa5",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "SeqNo"
+                  }
+                },
+                "": "",
+                "": "",
+                "": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "1",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.integer.u8": "59",
+                  "msgpack.string": "��4�\u0011�gmz12",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xab",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "��4�\u0011�gmz12"
+                  }
+                },
+                "": {
+                  "msgpack.integer.u8": "78",
+                  "msgpack.integer.8": "237"
+                },
+                "": {
+                  "msgpack.integer.8": "237",
+                  "msgpack.integer.u8": "103"
+                },
+                "": {
+                  "msgpack.string": "e�#����\u0005�n�&yc\u0005��\u0016!E�\u000ep4CFxV",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xbc",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "e�#����\u0005�n�&yc\u0005��\u0016!E�\u000ep4CFxV"
+                  },
+                  "msgpack.integer.u8": "10"
+                },
+                "": {
+                  "msgpack.integer.8": "244",
+                  "msgpack.string": "[ Null ]",
+                  "msgpack.string_tree": {
+                    "msgpack.integer.8": "226"
+                  }
+                },
+                "": "",
+                "": "",
+                "": "",
+                "": "",
+                "": "",
+                "": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "2",
+            "serf": {
+              "msgpack.integer.u8": "0"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "3",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "From",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "From"
+                  },
+                  "msgpack.string": "b5a32a1fe813.dc1",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xb0",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "b5a32a1fe813.dc1"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Incarnation",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xab",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Incarnation"
+                  },
+                  "msgpack.integer.u8": "1"
+                },
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "b35fdafbeecd.dc2",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xb0",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "b35fdafbeecd.dc2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "4",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Addr",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Addr"
+                  },
+                  "msgpack.string": "\nd\u0002\n",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "\nd\u0002\n"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Incarnation",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xab",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Incarnation"
+                  },
+                  "msgpack.integer.u8": "3"
+                },
+                "": {
+                  "msgpack.string": "Meta",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Meta"
+                  },
+                  "msgpack.string": "���ft_admpart�1�ap�foo�dc�dc1�segment��vsn_max�3�vsn_min�2�build�1.11.2+ent:e24b6864�ft_ns�1�role�node�id�",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "150",
+                    "msgpack.string": "���ft_admpart�1�ap�foo�dc�dc1�segment��vsn_max�3�vsn_min�2�build�1.11.2+ent:e24b6864�ft_ns�1�role�node�id�"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "4f3c9b616d62",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "4f3c9b616d62"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Port",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Port"
+                  }
+                },
+                "": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "5",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "From",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "From"
+                  },
+                  "msgpack.string": "4f3c9b616d62",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "4f3c9b616d62"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Incarnation",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xab",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Incarnation"
+                  },
+                  "msgpack.integer.u8": "2"
+                },
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "4f3c9b616d62",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "4f3c9b616d62"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "7",
+            "serf.message.compound_length": "2"
+          },
+          "serf": {
+            "serf.message.type": "2"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "8",
+            "serf": {
+              "msgpack.integer.u8": "1"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "9",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Algo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Algo"
+                  },
+                  "msgpack.integer.u8": "0"
+                },
+                "": {
+                  "msgpack.string": "Buf",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa3",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Buf"
+                  },
+                  "msgpack.string": "\u0007\u0006",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "319",
+                    "msgpack.string": "\u0007\u0006",
+                    "msgpack.string_tree": {
+                      "_ws.expert": {
+                        "_ws.string.trailing_stray_characters": "",
+                        "_ws.expert.message": "Trailing stray characters",
+                        "_ws.expert.severity": "6291456",
+                        "_ws.expert.group": "83886080"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "10",
+            "serf.message.encrypted_length": "3204",
+            "serf.message.encryption_version": "1",
+            "serf.message.encryption_nonce": "0a:d0:df:3c:63:b8:f2:d8:b9:2b:e8:9e",
+            "serf.message.remaining_payload": "38:ef:00:04:82:45:4e:e7:86:0f:ce:6b:7b:17:ce:67:f2:a5:e3:d0:34:b3:59:ba:2a:f4:3f:b6:d9:80:8b:f4:a0:f7:c9:f2:85:50:49:34:b4:4a:54:be:a9:8e:23:64:e1:d9:08:a9:43:24:9d:74:5e:de:d9:e0:11:21:42:3a:1e:1f:d3:6f:84:75:f7:47:cf:18:ec:eb:20:95:5b:4e:37:d9:b6:4f:eb:b2:30:70:42:6a:00:84:6b:c5:85:e9:d9:c0:a2:f5:e0:b3:2a:33:15:f1:bb:95:f8:f0:58:14:ad:c6:51:50:5f:83:90:5c:0a:0b:33:69:44:5a:50:95:a8:cc:b1:e6:e9:cf:c3:2a:71:37:ff:41:a4:cd:20:dc:4a:d7:ab:e3:6a:4c:77:28:dd:f5:c1:5a:37:b7:80:c8:f6:b2:8c:b8:f3:45:d2:78:75:c0:0f:02:5e:6c:ba:72:02:c1:33:af:9c:e4:fb:47:bb:14:00:fb:e4:3f:ca:d2:38:84:a4:20:fe:79:63:4d:f0:35:c2:75:b7:7b:cb:9b:75:fb:97:4e:2f:df:21:d1:7c:ec:9a:e9:00:5f:3e:4a:2b:f0:4a:92:e5:57:17:96:05:18:61:78:46:10:13:1b:85:76:74:df:da:22:f7:c6:4f:65:70:f6:ae:54:13:55:ae:23:15:4f:bf:71:54:3f:7f:8f:f1:af:31:69:21:24:bf:a4:c3:b6:36:78:2a:01:e2:4a:2c:93:42:93:c0:9d:af:33:65:84:c3:02:0d:a6:0b:43:0e:32:d3:e4:bc:09:b3:b8:ae:1b:dd:1c:94:14:48:e8:d5:8f:23:62:02:d2:27:aa:55:c3:e8:77:65:1f:aa:d3:23:47:5e:e5:c3:5b:e4:9a:dc:6e:6c:fb:46:3d:d5:23:a7:c9:5a:96:5e:aa:8d:96:01:0d:0b:76:36:42:a8:93:61:62:b0:97:36:15:a5:5e:da:40:a1:c0:b3:6f:79:63:58:f0:4b:17:0d:50:63:12:1c:73:3f:ec:88:c6:c1:9f:65:2c:79:c7:8b:fa:a2:f3:8d:d8:c1:f0:71:6a:25:ea:7a:15:dc:7f:b0:d0:e1:2b:9e:82:c6:35:5e:9a:9f:a7:8c:ce:e7:54:ed:a0:83:09:27:cc:82:0d:9d:05:c2:20:68:71:9a:c5:64:ce:9d:88:a0:a9:0a:fa:d5:9c:c2:ec:ed:b6:2f:18:d2:d5:8e:78:76:86:0c:0f:4e:45:e9:79:1c:8b:12:ea:e3:cf:ee:2f:6c:b7:3c:1d:49:df:ac:b1:57:33:66:92:27:69:a7:e1:bd:4c:32:1e:f7:1b:40:9b:ea:0d:6a:f2:26:08:d3:de:2b:9f:c4:1c:b9:c7:b4:26:fa:c9:d6:4a:e3:ef:74:4e:e9:e7:57:a2:32:23:4b:f8:86:5e:f0:60:47:ee:af:3c:c5:e4:36:a7:8b:94:78:7b:f5:59:d5:0b:29:6a:e8:ea:3f:57:ab:1b:af:10:9d:ab:8f:39:2f:29:91:c7:ff:08:56:3a:0f:ef:90:1e:26:1a:e9:2b:1e:98:03:a7:0b:3c:26:7a:b8:eb:ab:fb:eb:79:c6:3d:2c:dc:da:de:30:8e:57:ce:70:14:e3:eb:bf:ec:7a:fe:17:c5:55:36:77:27:8f:c4:65:22:15:d2:28:1c:d8:dc:d3:b9:98:a9:03:04:25:d4:3f:bd:e4:32:8c:35:9d:68:d9:49:47:7c:16:7a:11:cf:65:71:b5:d6:cf:fd:c3:e3:ca:39:a4:1e:28:c1:0a:46:57:9e:a6:b9:5c:1d:aa:66:85:9c:2b:47:45:3c:67:5f:36:97:12:e6:35:a6:7d:f8:95:87:98:44:0a:7b:b2:04:ad:54:f1:b7:82:d6:90:03:12:96:9d:44:90:b1:34:08:d2:ff:c9:52:3b:6f:ba:13:80:80:79:df:58:fc:7d:90:35:d7:9b:88:46:53:8c:81:0e:6f:54:69:e3:71:41:94:50:38:4a:03:ef:30:c1:da:f3:cb:3a:91:95:8c:98:af:9e:04:17:d5:0a:4d:35:00:a9:90:88:1d:b7:87:08:49:e0:3d:e2:25:1b:00:f5:10:45:fb:f4:8c:03:06:2d:19:3d:bb:6a:e6:1a:ba:ba:00:09:03:80:82:2b:92:f0:7f:47:52:38:5e:ae:7f:a0:72:0d:d9:75:28:24:1a:a3:22:9f:3f:30:94:91:03:71:3d:40:fc:79:d5:41:b8:6f:1f:7c:83:a8:9f:5b:00:68:98:99:5d:a3:cd:1e:6b:8c:7d:20:6d:9c:f4:c7:a3:ed:1f:2d:ee:32:1c:83:5c:cb:04:4d:31:68:d9:0c:3e:f9:40:7d:2f:f2:d4:bb:1d:03:f0:4e:68:1b:b5:cd:83:09:27:e9:58:53:e2:6f:4b:61:00:98:61:ed:6a:d1:52:03:f4:8e:bc:bb:93:b5:47:52:fe:f1:9b:8e:96:c1:97:86:a8:05:3e:f7:fc:d6:28:b8:50:ff:41:0f:a8:66:f9:37:00:76:3a:e4:2a:c9:0d:55:bc:0a:e0:67:36:52:be:17:f0:97:d7:3b:13:15:19:93:20:16:cc:2b:fe:78:a6:43:1e:02:b7:f9:a4:a7:75:74:8a:37:e4:4e:df:3a:47:55:e1:94:be:0e:84:15:5b:f1:a2:4d:dc:b5:0f:41:7a:b8:47:a2:37:d9:99:40:a6:6b:7d:8a:a4:8d:ba:4b:b2:ea:94:0e:07:62:0c:29:75:f0:37:e7:e9:14:c7:df:e1:f3:f4:21:47:4e:ea:e5:7d:76:dd:f9:9b:8d:e0:99:a4:0d:8c:ab:b3:b5:45:64:3c:b5:32:3c:79:d5:fb:1b:94:45:c7:59:0a:37:40:b5:eb:02:fc:39:c8:26:d2:f6:7f:4f:ca:34:7d:22:59:1a:7d:94:06:a1:28:a9:f6:4a:3a:52:4f:72:99:14:41:d9:e3:4f:7b:c7:35:98:28:c5:4e:c0:86:1d:6a:17:99:ae:50:1b:8a:81:8e:8e:6c:b9:e7:1a:e0:5f:7b:69:84:4a:eb:7d:44:82:6f:8f:eb:c3:b5:33:bc:ac:88:86:ed:12:af:a4:00:66:56:49:36:85:f8:0f:b8:45:4e:5a:c1:94:1a:52:d8:9a:49:4c:29:15:d0:bb:de:a4:ab:36:17:fb:ed:05:d9:f6:eb:dc:46:ac:75:5c:e1:35:f6:7a:9b:ed:bd:cb:78:a2:d3:c4:34:fb:31:fd:0e:92:fc:01:5d:fd:cd:33:7e:4b:51:01:60:3c:1e:17:83:c7:3d:32:ca:cf:83:3d:fb:7c:61:78:5d:33:0d:73:e4:ad:1e:7e:98:ff:1a:cd:22:33:91:25:bb:8f:e4:3d:39:7f:e1:aa:93:1d:7d:bd:43:0a:55:dd:1c:1f:65:eb:74:30:83:fb:1e:8e:ea:47:fe:ec:f7:c6:51:24:a7:4b:51:50:d5:7f:ba:39:49:b4:eb:ae:54:5e:6d:c7:d0:2d:89:17:78:48:d6:03:74:15:f5:fd:7f:83:37:ea:b6:5a:ed:47:ee:13:5c:36:80:27:59:ae:66:eb:9c:dc:e6:22:3c:fe:06:83:75:96:11:6a:e2:86:e3:e4:01:50:11:90:1a:16:21:37:ff:fa:cc:39:cc"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "8",
+            "serf": {
+              "msgpack.integer.u8": "0"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "244",
+            "serf.label.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "bar"
+          },
+          "serf": {
+            "serf.message.type": "0",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "1ee8d1c25449",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "1ee8d1c25449"
+                  }
+                },
+                "": {
+                  "msgpack.string": "SeqNo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa5",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "SeqNo"
+                  }
+                },
+                "": "",
+                "": "",
+                "": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "244",
+            "serf.label.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "bar"
+          },
+          "serf": {
+            "serf.message.type": "2",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Payload",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa7",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Payload"
+                  },
+                  "msgpack.string": "\u0001��Adjustment��6X_�?GL�Error�?��������Height�?&oI��c��Vec���O�\u0007���\u000f��I����'���L�Y��Y\u0013��A�I��Z@�?56j�\u0005���?P��5�:\f��V'�t�es�?Tt��{�\u0004",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "130",
+                    "msgpack.string": "\u0001��Adjustment��6X_�?GL�Error�?��������Height�?&oI��c��Vec���O�\u0007���\u000f��I����'���L�Y��Y\u0013��A�I��Z@�?56j�\u0005���?P��5�:\f��V'�t�es�?Tt��{�\u0004"
+                  }
+                },
+                "": {
+                  "msgpack.string": "SeqNo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa5",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "SeqNo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "244",
+            "serf.label.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "foo"
+          },
+          "serf": {
+            "serf.message.type": "7",
+            "serf.message.compound_length": "2"
+          },
+          "serf": {
+            "serf.message.type": "2",
+            "serf": {
+              "msgpack.string": "Payload",
+              "msgpack.string_tree": {
+                "msgpack.type": "0xa7",
+                "msgpack.string.len": "0",
+                "msgpack.string": "Payload"
+              }
+            }
+          },
+          "serf": {
+            "serf.message.type": "8"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "244",
+            "serf.label.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "foo"
+          },
+          "serf": {
+            "serf.message.type": "9",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Algo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Algo"
+                  },
+                  "msgpack.integer.u8": "0"
+                },
+                "": {
+                  "msgpack.string": "Buf",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa3",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Buf"
+                  },
+                  "msgpack.string": "\u0007\u0006",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "319",
+                    "msgpack.string": "\u0007\u0006",
+                    "msgpack.string_tree": {
+                      "_ws.expert": {
+                        "_ws.string.trailing_stray_characters": "",
+                        "_ws.expert.message": "Trailing stray characters",
+                        "_ws.expert.severity": "6291456",
+                        "_ws.expert.group": "83886080"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "244",
+            "serf.label.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "foo"
+          },
+          "serf": {
+            "serf.message.type": "12",
+            "serf.message.checksum": "3135561656"
+          },
+          "serf": {
+            "serf.message.type": "8",
+            "serf": {
+              "msgpack.integer.u8": "0"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "12",
+            "serf.message.checksum": "2538214317"
+          },
+          "serf": {
+            "serf.message.type": "4",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Addr",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Addr"
+                  },
+                  "msgpack.string": "\nd\u0003\u0014",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "\nd\u0003\u0014"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Incarnation",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xab",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Incarnation"
+                  },
+                  "msgpack.integer.u8": "2"
+                },
+                "": {
+                  "msgpack.string": "Meta",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Meta"
+                  },
+                  "msgpack.string": "���segment�alpha�ft_ns�1�vsn�2�vsn_min�2�vsn_max�3�build�1.11.2+ent:e24b6864�ft_admpart�1�role�node�dc�dc1�id�",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "148",
+                    "msgpack.string": "���segment�alpha�ft_ns�1�vsn�2�vsn_min�2�vsn_max�3�build�1.11.2+ent:e24b6864�ft_admpart�1�role�node�dc�dc1�id�"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "d5b12cd10f6d",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "d5b12cd10f6d"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Port",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Port"
+                  }
+                },
+                "": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "12",
+            "serf.message.checksum": "873929879"
+          },
+          "serf": {
+            "serf.message.type": "8",
+            "serf": {
+              "msgpack.integer.u8": "1"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "_ws.lua.fake": "",
+        "serf": {
+          "serf": {
+            "serf.message.type": "12",
+            "serf.message.checksum": "3140165674"
+          },
+          "serf": {
+            "serf.message.type": "9",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Algo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Algo"
+                  },
+                  "msgpack.integer.u8": "0"
+                },
+                "": {
+                  "msgpack.string": "Buf",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa3",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Buf"
+                  },
+                  "msgpack.string": "\u0007\n\u0004�",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "607",
+                    "msgpack.string": "\u0007\n\u0004�",
+                    "msgpack.string_tree": {
+                      "_ws.expert": {
+                        "_ws.string.trailing_stray_characters": "",
+                        "_ws.expert.message": "Trailing stray characters",
+                        "_ws.expert.severity": "6291456",
+                        "_ws.expert.group": "83886080"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

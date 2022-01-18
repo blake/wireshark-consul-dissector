@@ -1,0 +1,94 @@
+### Yamux test data
+
+# RPC Type: MultiplexV2 (0x04)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   04
+
+#### Data ####
+
+# Message type: Data (0x00)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   00 00 00 00 00 00 00 01 00 00 00 26
+
+# Message type: Data (0x00)
+# Direction: Outbound (0)
+O
+# Packet bytes
+0000   00 00 00 00 00 00 00 01 00 00 00 26
+
+#### Window Update ####
+# Message type: Window Update (0x01)
+# Flags: SYN (0x0001)
+# Direction: Outbound (O)
+O
+0000   00 01 00 01 00 00 00 01 00 00 00 00
+
+# Message type: Window Update (0x01)
+# Flags: ACK (0x0002)
+# Direction: Inbound (I)
+I
+0000   00 01 00 02 00 00 00 01 00 00 00 00
+
+# Message type: Window Update (0x01)
+# Flags: SYN (0x0001)
+# Direction: Inbound (I)
+I
+0000   00 01 00 01 00 00 00 01 00 00 00 00
+
+# Message type: Window Update (0x01)
+# Flags: ACK (0x0002)
+# Direction: Outbound (O)
+O
+0000   00 01 00 02 00 00 00 01 00 00 00 00
+
+# Message type: Window Update (0x01)
+# Flags: FIN (0x0004)
+# Direction: Outbound (O)
+O
+0000   00 01 00 04 00 00 00 03 00 00 00 00
+
+# Message type: Window Update (0x01)
+# Flags: FIN (0x0004)
+# Direction: Inbound (I)
+I
+0000   00 01 00 04 00 00 00 03 00 00 00 00
+
+#### Ping ####
+# Message type: Ping (0x02)
+# Flags: SYN (0x0001)
+# Direction: Outbound (O)
+O
+0000   00 02 00 01 00 00 00 00 00 00 00 04
+
+# Message type: Ping (0x02)
+# Flags: ACK (0x0002)
+# Direction: Inbound (O)
+I
+0000   00 02 00 02 00 00 00 00 00 00 00 04
+
+# Message type: Ping (0x02)
+# Flags: SYN (0x0001)
+# Direction: Inbound (I)
+I
+0000   00 02 00 01 00 00 00 00 00 00 00 04
+
+# Message type: Ping (0x02)
+# Flags: ACK (0x0002)
+# Direction: Outbound (O)
+O
+0000   00 02 00 02 00 00 00 00 00 00 00 04
+
+#### Go Away ####
+# Message type: GoAway (0x03)
+# Direction: Outbound (O)
+# O
+# <bytes>
+
+# Message type: GoAway (0x03)
+# Direction: Inbound (I)
+# I
+# <bytes>

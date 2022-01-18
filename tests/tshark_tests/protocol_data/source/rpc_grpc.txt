@@ -1,0 +1,7 @@
+# RPC gRPC test data
+
+# RPC Type: RPCGRPC (0x08)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   08

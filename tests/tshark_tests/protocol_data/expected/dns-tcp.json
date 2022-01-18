@@ -1,0 +1,227 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "dns": {
+          "dns.length": "58",
+          "dns.id": "0xed9b",
+          "dns.flags": "0x0120",
+          "dns.flags_tree": {
+            "dns.flags.response": "0",
+            "dns.flags.opcode": "0",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "1",
+            "dns.flags.checkdisable": "0"
+          },
+          "dns.count.queries": "1",
+          "dns.count.answers": "0",
+          "dns.count.auth_rr": "0",
+          "dns.count.add_rr": "1",
+          "Queries": {
+            "db.service.consul: type A, class IN": {
+              "dns.qry.name": "db.service.consul",
+              "dns.qry.name.len": "17",
+              "dns.count.labels": "3",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            }
+          },
+          "Additional records": {
+            "<Root>: type OPT": {
+              "dns.resp.name": "<Root>",
+              "dns.resp.type": "41",
+              "dns.rr.udp_payload_size": "1232",
+              "dns.resp.ext_rcode": "0x00",
+              "dns.resp.edns0_version": "0",
+              "dns.resp.z": "0x0000",
+              "dns.resp.z_tree": {
+                "dns.resp.z.do": "0",
+                "dns.resp.z.reserved": "0x0000"
+              },
+              "dns.resp.len": "12",
+              "dns.opt": {
+                "dns.opt.code": "10",
+                "dns.opt.len": "8",
+                "dns.opt.data": "05:5c:5d:72:d2:90:0b:26",
+                "dns.opt.cookie.client": "05:5c:5d:72:d2:90:0b:26",
+                "dns.opt.cookie.server": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "dns": {
+          "dns.length": "58",
+          "dns.id": "0xed9b",
+          "dns.id_tree": {
+            "_ws.expert": {
+              "dns.retransmit_request": "",
+              "_ws.expert.message": "DNS query retransmission. Original request in frame 1",
+              "_ws.expert.severity": "6291456",
+              "_ws.expert.group": "150994944"
+            }
+          },
+          "dns.flags": "0x0120",
+          "dns.flags_tree": {
+            "dns.flags.response": "0",
+            "dns.flags.opcode": "0",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "1",
+            "dns.flags.checkdisable": "0"
+          },
+          "dns.count.queries": "1",
+          "dns.count.answers": "0",
+          "dns.count.auth_rr": "0",
+          "dns.count.add_rr": "1",
+          "Queries": {
+            "db.service.consul: type A, class IN": {
+              "dns.qry.name": "db.service.consul",
+              "dns.qry.name.len": "17",
+              "dns.count.labels": "3",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            }
+          },
+          "Additional records": {
+            "<Root>: type OPT": {
+              "dns.resp.name": "<Root>",
+              "dns.resp.type": "41",
+              "dns.rr.udp_payload_size": "1232",
+              "dns.resp.ext_rcode": "0x00",
+              "dns.resp.edns0_version": "0",
+              "dns.resp.z": "0x0000",
+              "dns.resp.z_tree": {
+                "dns.resp.z.do": "0",
+                "dns.resp.z.reserved": "0x0000"
+              },
+              "dns.resp.len": "12",
+              "dns.opt": {
+                "dns.opt.code": "10",
+                "dns.opt.len": "8",
+                "dns.opt.data": "05:5c:5d:72:d2:90:0b:26",
+                "dns.opt.cookie.client": "05:5c:5d:72:d2:90:0b:26",
+                "dns.opt.cookie.server": ""
+              }
+            }
+          },
+          "dns.retransmit_request_in": "1",
+          "dns.retransmission": "1"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "dns": {
+          "dns.length": "62",
+          "dns.id": "0xed9b",
+          "dns.flags": "0x8500",
+          "dns.flags_tree": {
+            "dns.flags.response": "1",
+            "dns.flags.opcode": "0",
+            "dns.flags.authoritative": "1",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.recavail": "0",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "0",
+            "dns.flags.checkdisable": "0",
+            "dns.flags.rcode": "0"
+          },
+          "dns.count.queries": "1",
+          "dns.count.answers": "1",
+          "dns.count.auth_rr": "0",
+          "dns.count.add_rr": "1",
+          "Queries": {
+            "db.service.consul: type A, class IN": {
+              "dns.qry.name": "db.service.consul",
+              "dns.qry.name.len": "17",
+              "dns.count.labels": "3",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            }
+          },
+          "Answers": {
+            "db.service.consul: type A, class IN, addr 10.100.3.20": {
+              "dns.resp.name": "db.service.consul",
+              "dns.resp.type": "1",
+              "dns.resp.class": "0x0001",
+              "dns.resp.ttl": "0",
+              "dns.resp.len": "4",
+              "dns.a": "10.100.3.20"
+            }
+          },
+          "Additional records": {
+            "<Root>: type OPT": {
+              "dns.resp.name": "<Root>",
+              "dns.resp.type": "41",
+              "dns.rr.udp_payload_size": "1232",
+              "dns.resp.ext_rcode": "0x00",
+              "dns.resp.edns0_version": "0",
+              "dns.resp.z": "0x0000",
+              "dns.resp.z_tree": {
+                "dns.resp.z.do": "0",
+                "dns.resp.z.reserved": "0x0000"
+              },
+              "dns.resp.len": "0"
+            }
+          },
+          "dns.response_to": "1",
+          "dns.time": "0.000000002"
+        }
+      }
+    }
+  }
+]

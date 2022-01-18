@@ -1,0 +1,235 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "dns": {
+          "dns.id": "0x003a",
+          "dns.flags": "0xed9b",
+          "dns.flags_tree": {
+            "dns.flags.response": "1",
+            "dns.flags.opcode": "13",
+            "dns.flags.authoritative": "1",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.recavail": "1",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "0",
+            "dns.flags.checkdisable": "1",
+            "dns.flags.rcode": "11"
+          },
+          "dns.count.queries": "288",
+          "dns.count.answers": "1",
+          "dns.count.auth_rr": "0",
+          "dns.count.add_rr": "0",
+          "Queries": {
+            "<Root>: type Unknown (258), class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "258",
+              "dns.qry.class": "0x6462"
+            },
+            "service.consul: type A, class IN": {
+              "dns.qry.name": "service.consul",
+              "dns.qry.name.len": "14",
+              "dns.count.labels": "2",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            },
+            "<Root>: type OPT, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "41",
+              "dns.qry.class": "0x04d0"
+            },
+            "<Root>: type Unused, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "0",
+              "dns.qry.class": "0x0000"
+            }
+          }
+        },
+        "_ws.malformed": {
+          "filtered": "_ws.malformed"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "dns": {
+          "dns.id": "0x003a",
+          "dns.flags": "0xed9b",
+          "dns.flags_tree": {
+            "dns.flags.response": "1",
+            "dns.flags.opcode": "13",
+            "dns.flags.authoritative": "1",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.recavail": "1",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "0",
+            "dns.flags.checkdisable": "1",
+            "dns.flags.rcode": "11"
+          },
+          "dns.count.queries": "288",
+          "dns.count.answers": "1",
+          "dns.count.auth_rr": "0",
+          "dns.count.add_rr": "0",
+          "Queries": {
+            "<Root>: type Unknown (258), class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "258",
+              "dns.qry.class": "0x6462"
+            },
+            "service.consul: type A, class IN": {
+              "dns.qry.name": "service.consul",
+              "dns.qry.name.len": "14",
+              "dns.count.labels": "2",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            },
+            "<Root>: type OPT, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "41",
+              "dns.qry.class": "0x04d0"
+            },
+            "<Root>: type Unused, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "0",
+              "dns.qry.class": "0x0000"
+            }
+          }
+        },
+        "_ws.malformed": {
+          "filtered": "_ws.malformed"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "udp": {
+          "filtered": "udp"
+        },
+        "dns": {
+          "dns.id": "0x003e",
+          "dns.flags": "0xed9b",
+          "dns.flags_tree": {
+            "dns.flags.response": "1",
+            "dns.flags.opcode": "13",
+            "dns.flags.authoritative": "1",
+            "dns.flags.truncated": "0",
+            "dns.flags.recdesired": "1",
+            "dns.flags.recavail": "1",
+            "dns.flags.z": "0",
+            "dns.flags.authenticated": "0",
+            "dns.flags.checkdisable": "1",
+            "dns.flags.rcode": "11"
+          },
+          "dns.count.queries": "34048",
+          "dns.count.answers": "1",
+          "dns.count.auth_rr": "1",
+          "dns.count.add_rr": "0",
+          "Queries": {
+            "<Root>: type Unknown (258), class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "258",
+              "dns.qry.class": "0x6462"
+            },
+            "service.consul: type A, class IN": {
+              "dns.qry.name": "service.consul",
+              "dns.qry.name.len": "14",
+              "dns.count.labels": "2",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            },
+            "<Root>: type A, class IN": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "1",
+              "dns.qry.class": "0x0001"
+            },
+            "<Root>: type Unused, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "0",
+              "dns.qry.class": "0x0000"
+            },
+            "\\nd\\003\\024: type OPT, class Unknown": {
+              "dns.qry.name": "\\nd\\003\\024",
+              "dns.qry.name.len": "4",
+              "dns.count.labels": "1",
+              "dns.qry.type": "41",
+              "dns.qry.class": "0x04d0"
+            },
+            "<Root>: type Unused, class Unknown": {
+              "dns.qry.name": "<Root>",
+              "dns.qry.name.len": "6",
+              "dns.count.labels": "1",
+              "dns.qry.type": "0",
+              "dns.qry.class": "0x0000"
+            }
+          }
+        },
+        "_ws.malformed": {
+          "filtered": "_ws.malformed"
+        }
+      }
+    }
+  }
+]

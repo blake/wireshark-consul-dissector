@@ -1,0 +1,41 @@
+### Raft test data
+
+# RPC Type: Raft (0x01)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   01
+
+# Message Type: RequestVote (0x01)
+# Direction: Outbound (0)
+O
+# Packet bytes
+0000   01 86 a9 43 61 6e 64 69 64 61 74 65 b4 32 31 36
+0010   2e 31 35 32 2e 32 34 38 2e 31 39 35 3a 38 33 30
+0020   30 ac 4c 61 73 74 4c 6f 67 49 6e 64 65 78 ce 00
+0030   55 05 85 ab 4c 61 73 74 4c 6f 67 54 65 72 6d ce
+0040   00 7f cc 81 b2 4c 65 61 64 65 72 73 68 69 70 54
+0050   72 61 6e 73 66 65 72 c2 af 50 72 6f 74 6f 63 6f
+0060   6c 56 65 72 73 69 6f 6e 03 a4 54 65 72 6d ce 00
+0070   7f cc 8b
+
+# Message Type: RPCResponse (0xa0)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   a0 84 a7 47 72 61 6e 74 65 64 c3 a5 50 65 65 72
+0010   73 c0 af 50 72 6f 74 6f 63 6f 6c 56 65 72 73 69
+0020   6f 6e 03 a4 54 65 72 6d ce 00 7f cc 8b
+
+# Message Type: AppendEntries (0x00)
+# Direction: Outbound (O)
+O
+# Packet bytes
+0000   00 87 a7 45 6e 74 72 69 65 73 90 a6 4c 65 61 64
+0010   65 72 b4 32 31 36 2e 31 35 32 2e 32 34 38 2e 31
+0020   39 35 3a 38 33 30 30 b1 4c 65 61 64 65 72 43 6f
+0030   6d 6d 69 74 49 6e 64 65 78 ce 00 55 05 85 ac 50
+0040   72 65 76 4c 6f 67 45 6e 74 72 79 ce 00 55 05 85
+0050   ab 50 72 65 76 4c 6f 67 54 65 72 6d ce 00 7f cc
+0060   81 af 50 72 6f 74 6f 63 6f 6c 56 65 72 73 69 6f
+0070   6e 03 a4 54 65 72 6d ce 00 7f cc 8b

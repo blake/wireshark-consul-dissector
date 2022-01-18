@@ -1,0 +1,7 @@
+### RPC TLS Insecure test data
+
+# RPC Type: TLSInsecure (0x07)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   07

@@ -1,0 +1,7 @@
+# RPC TLS test data
+
+# RPC Type: RPCTLS (0x03)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   03

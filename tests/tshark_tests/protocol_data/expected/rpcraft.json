@@ -1,0 +1,245 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "consul": {
+          "_ws.lua.fake": ""
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "rpcraft": {
+          "raft.type": "0x01",
+          "rpcraft": {
+            "msgpack.string": "[ Null ]",
+            "msgpack.string_tree": {
+              "": {
+                "msgpack.string": "Candidate",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa9",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Candidate"
+                },
+                "msgpack.string": "216.152.248.195:8300",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xb4",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "216.152.248.195:8300"
+                }
+              },
+              "": {
+                "msgpack.string": "LastLogIndex",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xac",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "LastLogIndex"
+                }
+              },
+              "": "",
+              "": "",
+              "": "",
+              "": ""
+            }
+          },
+          "rpcraft": {
+            "_ws.expert": {
+              "msgpack.unsupported": "",
+              "_ws.expert.message": "Type 0xce is unsupported",
+              "_ws.expert.severity": "6291456",
+              "_ws.expert.group": "83886080"
+            },
+            "data": {
+              "data.data": "ce:00:55:05:85:ab:4c:61:73:74:4c:6f:67:54:65:72:6d:ce:00:7f:cc:81:b2:4c:65:61:64:65:72:73:68:69:70:54:72:61:6e:73:66:65:72:c2:af:50:72:6f:74:6f:63:6f:6c:56:65:72:73:69:6f:6e:03:a4:54:65:72:6d:ce:00:7f:cc:8b",
+              "data.len": "69"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "rpcraft": {
+          "raft.type": "0xa0",
+          "rpcraft": {
+            "msgpack.string": "[ Null ]",
+            "msgpack.string_tree": {
+              "": {
+                "msgpack.string": "Granted",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa7",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Granted"
+                },
+                "msgpack.boolean": "1"
+              },
+              "": {
+                "msgpack.string": "Peers",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa5",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Peers"
+                },
+                "msgpack.string": "nil"
+              },
+              "": {
+                "msgpack.string": "ProtocolVersion",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xaf",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "ProtocolVersion"
+                },
+                "msgpack.integer.u8": "3"
+              },
+              "": {
+                "msgpack.string": "Term",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa4",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Term"
+                }
+              }
+            }
+          },
+          "rpcraft": {
+            "_ws.expert": {
+              "msgpack.unsupported": "",
+              "_ws.expert.message": "Type 0xce is unsupported",
+              "_ws.expert.severity": "6291456",
+              "_ws.expert.group": "83886080"
+            },
+            "data": {
+              "data.data": "ce:00:7f:cc:8b",
+              "data.len": "5"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "rpcraft": {
+          "raft.type": "0x00",
+          "rpcraft": {
+            "msgpack.string": "[ Null ]",
+            "msgpack.string_tree": {
+              "": {
+                "msgpack.string": "Entries",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa7",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Entries"
+                },
+                "msgpack.string": "[ Null ]"
+              },
+              "": {
+                "msgpack.string": "Leader",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xa6",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "Leader"
+                },
+                "msgpack.string": "216.152.248.195:8300",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xb4",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "216.152.248.195:8300"
+                }
+              },
+              "": {
+                "msgpack.string": "LeaderCommitIndex",
+                "msgpack.string_tree": {
+                  "msgpack.type": "0xb1",
+                  "msgpack.string.len": "0",
+                  "msgpack.string": "LeaderCommitIndex"
+                }
+              },
+              "": "",
+              "": "",
+              "": "",
+              "": ""
+            }
+          },
+          "rpcraft": {
+            "_ws.expert": {
+              "msgpack.unsupported": "",
+              "_ws.expert.message": "Type 0xce is unsupported",
+              "_ws.expert.severity": "6291456",
+              "_ws.expert.group": "83886080"
+            },
+            "data": {
+              "data.data": "ce:00:55:05:85:ac:50:72:65:76:4c:6f:67:45:6e:74:72:79:ce:00:55:05:85:ab:50:72:65:76:4c:6f:67:54:65:72:6d:ce:00:7f:cc:81:af:50:72:6f:74:6f:63:6f:6c:56:65:72:73:69:6f:6e:03:a4:54:65:72:6d:ce:00:7f:cc:8b",
+              "data.len": "67"
+            }
+          }
+        }
+      }
+    }
+  }
+]

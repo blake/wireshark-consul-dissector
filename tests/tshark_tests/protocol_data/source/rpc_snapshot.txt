@@ -1,0 +1,7 @@
+# RPC Snapshot test data
+
+# RPC Type: RPCSnapshot (0x05)
+# Direction: Inbound (I)
+I
+# Packet bytes
+0000   05

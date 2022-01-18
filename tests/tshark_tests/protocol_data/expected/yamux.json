@@ -1,0 +1,371 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "consul": {
+          "_ws.lua.fake": ""
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x00",
+          "yamux.flags": "0x0000",
+          "yamux.stream_id": "1",
+          "yamux.length": "38"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x00",
+          "yamux.flags": "0x0000",
+          "yamux.stream_id": "1",
+          "yamux.length": "38",
+          "yamux.previous_frame": "2"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0001",
+          "yamux.stream_id": "1",
+          "yamux.length": "0",
+          "yamux.previous_frame": "3"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0002",
+          "yamux.stream_id": "1",
+          "yamux.length": "0",
+          "yamux.previous_frame": "4"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0001",
+          "yamux.stream_id": "1",
+          "yamux.length": "0",
+          "yamux.previous_frame": "5"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0002",
+          "yamux.stream_id": "1",
+          "yamux.length": "0",
+          "yamux.previous_frame": "6"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0004",
+          "yamux.stream_id": "3",
+          "yamux.length": "0"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x01",
+          "yamux.flags": "0x0004",
+          "yamux.stream_id": "3",
+          "yamux.length": "0",
+          "yamux.previous_frame": "8"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x02",
+          "yamux.flags": "0x0001",
+          "yamux.stream_id": "0",
+          "yamux.length": "4"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x02",
+          "yamux.flags": "0x0002",
+          "yamux.stream_id": "0",
+          "yamux.length": "4",
+          "yamux.previous_frame": "10"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x02",
+          "yamux.flags": "0x0001",
+          "yamux.stream_id": "0",
+          "yamux.length": "4",
+          "yamux.previous_frame": "11"
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "yamux": {
+          "yamux.version": "0",
+          "yamux.type": "0x02",
+          "yamux.flags": "0x0002",
+          "yamux.stream_id": "0",
+          "yamux.length": "4",
+          "yamux.previous_frame": "12"
+        }
+      }
+    }
+  }
+]

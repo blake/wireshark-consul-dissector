@@ -1,0 +1,26 @@
+[
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
+        },
+        "_ws.lua.fake": "",
+        "consul": {
+          "_ws.lua.fake": ""
+        }
+      }
+    }
+  }
+]
