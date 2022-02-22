@@ -1,4 +1,4 @@
-# wireshark-dissector-consul
+# wireshark-consul-dissector
 
 A Wireshark dissector for HashiCorp [Consul](https://www.consul.io/), written in
 Lua. This dissector is capable of decoding Consul's RPC and Gossip communication.
@@ -22,8 +22,8 @@ plugin directory. The location varies depending on your operating system.
 For example:
 
 ```shell-session
-git clone https://github.com/blake/wireshark-dissector-consul.git
-cd wireshark-dissector-consul
+git clone https://github.com/blake/wireshark-consul-dissector.git
+cd wireshark-consul-dissector
 export WIRESHARK_PLUGIN_DIR="${HOME}/.local/lib/wireshark/plugins/"
 mkdir -p $WIRESHARK_PLUGIN_DIR
 cp -R src/* "${WIRESHARK_PLUGIN_DIR}"
