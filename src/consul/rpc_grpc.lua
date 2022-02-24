@@ -43,7 +43,7 @@ end
 
 --- Dissector for the RPCGRPC protocol
 -- Parses a Tvb to determine if it is a RPCGRPC type
--- @function proto_tls_insecure.dissector
+-- @function proto_grpc.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information

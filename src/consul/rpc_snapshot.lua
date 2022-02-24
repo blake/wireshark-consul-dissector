@@ -15,7 +15,7 @@
 local proto_snapshot = Proto("RPCSnapshot", "RPCSnapshot Protocol")
 
 --- Initialization function for this protocol
---  Adds this protocol to the 'consul.protocol' dissector table
+--- Adds this protocol to the 'consul.protocol' dissector table
 -- @function proto_snapshot.init
 function proto_snapshot.init()
     local consul_proto_dissector_table = DissectorTable.get("consul.protocol")
@@ -30,13 +30,13 @@ end
 
 --- Dissector for the RPCSnapshot protocol
 -- Parses a Tvb to determine if it is a RPCSnapshot type
--- @function proto_tls_insecure.dissector
+-- @function proto_snapshot.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information
 -- @tparam TreeItem tree An object representing the root of the packet tree
 -- @treturn number The number of bytes processed by this dissector
-function proto_snapshot.dissector(tvb, pinfo, tree)
+function proto_snapshot.dissector(tvb, pinfo, _)
     local buffer_len = tvb:captured_len()
 
     -- Set the protocol column to the protocol name and then return

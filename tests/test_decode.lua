@@ -25,6 +25,7 @@ TestProtocols = {} -- class
 --- Construct the command string for generating the PCAP files from the test data
 -- @function text2pcap_command
 --
+-- @tparam table arguments A table containing keys and values to build arguments for the command
 -- @treturn string The command string to be executed
 local function text2pcap_command(arguments)
     local cmd = {
@@ -112,6 +113,12 @@ local function construct_tshark_cmd(arguments)
     return table.concat(cmd_parts, " ")
 end
 
+--- Returns the name of the file to compare the decoded data with
+-- @function expected_data_filename
+--
+-- @tparam string name The name of the protocol to test
+-- @tparam string protocol The optional transport protocol (tcp or udp)
+-- @treturn string The command string to be executed
 local function expected_data_filename(name, protocol)
     if protocol == nil then
         return PROTOCOL_DATA_DIR .. "/expected/" .. name .. ".json"
@@ -120,6 +127,12 @@ local function expected_data_filename(name, protocol)
     end
 end
 
+--- Test decoding of a single protocol
+-- @function test_protocol
+--
+-- @tparam string The name of the protocol to test
+-- @tparam table arguments A table containing the additional arguments to the function
+-- @treturn string The command string to be executed
 local function test_protocol(name, arguments)
     -- Create temporary file for pcap data
     local tmpfile = os.tmpname()

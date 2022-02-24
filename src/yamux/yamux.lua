@@ -201,6 +201,12 @@ local function call_sub_dissector(pattern, tvb, pinfo, tree)
     return consul_dissector_table:try(pattern, tvb, pinfo, tree)
 end
 
+--- Get the specified number of bytes from the Tvb and advance the cursor position
+-- @function get_bytes
+--
+-- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
+-- @tparam number length The number of bytes to get from the buffer
+-- @treturn TvbRange The TvbRange of the specified number of bytes
 local function get_bytes(tvb, length)
     local tvb_range = tvb:range(pos, length)
     pos = pos + length
@@ -208,6 +214,8 @@ local function get_bytes(tvb, length)
     return tvb_range
 end
 
+--- Returns the TCP stream ID for the current packet
+-- @treturn number The ID of the current TCP stream
 local function get_stream_index()
     local stream_id = stream_index()
     if not stream_id then
@@ -217,6 +225,10 @@ local function get_stream_index()
     return stream_id.value
 end
 
+--- Constructs a unique stream ID for the current packet. This is a combination
+--- of the TCP and Yamux stream IDs. It is used to uniquely identify a Yamux
+--- stream in the packet tree.
+-- @treturn string A string representing a unique ID for this Yamux stream
 local function construct_stream_id(yamux_id)
     return string.format("%s-%s", get_stream_index(), yamux_id)
 end
@@ -398,7 +410,7 @@ end
 
 --- Dissector for the Yamux protocol
 -- Parses a Tvb to determine if it is a Yamux frame
--- @function yamux.dissector
+-- @function proto_yamux.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information

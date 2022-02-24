@@ -36,15 +36,15 @@ RPC protocols and message types.
 
 ### RPC types
 
-| RPC type | Byte identifier | Identify | Decode |
+| RPC type | Byte identifier | Can identify | Can decode |
 | ---------| --------------- | --------- | -------- |
 | Consul | `0x00` | No | N/A |
 | Raft | `0x01` | Yes | Yes
 | Multiplex (Muxado) | `0x02` | No | N/A |
 | TLS | `0x03` | Yes | No |
 | MultiplexV2 (Yamux) | `0x04` | Yes | Yes |
-| Snapshot | `0x05` | Identify | No |
-| Gossip | `0x06` | Yes | Partial (Only packet header type)
+| Snapshot | `0x05` | Yes | No |
+| Gossip | `0x06` | Yes | Partially (Only headers of type 'packet')
 | TLS Insecure | `0x07` | Yes | No |
 | gRPC | `0x08` | Yes | Yes |
 
@@ -60,22 +60,51 @@ RPC protocols and message types.
 | Dead | `0x05` | Yes |
 | Push/pull | `0x06` | Unknown |
 | Compound | `0x07` | Yes |
-| User | `0x08` | Partial (No user message parsing) |
-| Compress | `0x09` | Partial (no decompression)  |
-| Encrypt | `0x0a` | Partial (no decryption) |
+| User | `0x08` | Yes |
+| Compress | `0x09` | Partially (no decompression)  |
+| Encrypt | `0x0a` | Partially (no decryption) |
 | NACK Response | `0x0b` | Yes |
 | Has CRC | `0x0c` | Yes |
 | Error | `0x0d` | Unknown |
 
-## Filters
+## Display filters
 
-It is possible to use Wireshark filters with fields provided by the various
-protocols dissectors. There are many fields that can be used to filter on. When
-a value following the field is absent all TCP packets with the field will be
-shown.  The following is a selection of useful fields.
+Wireshark display filters can be used to filter packets from the packet list
+pane.
 
-| Filter field | Detail | Example |
-| ------------ | ------ | ------- |
-| serf.message.type | Filter by the Serf message type | `serf.message.type == HasCRC` |
-| yamux.stream_id | Find packets matching the Yamux stream ID | `yamux.stream_id == 3` |
-| yamux.type | Find packets matching the Yamux packet type | `yamux.type == WindowUpdate` |
+Each protocol dissector supported by this plugin will decode its packet
+payload into one or more packet fields. These fields can be referenced in the
+display filter, along with the filter fields supported by the lower layer
+protocols.
+
+If a field name is specified with no match criteria (e.g., `yamux.version`), all
+packets containing that field will be displayed.
+
+The following table contains the list of supported fields for each protocol
+dissector.
+
+| Name | Description | Example |
+| ---- | ----------- | ------- |
+| rpcgossip.addr.ip | The IP address that the packet was received on. | `rpcgossip.addr.ip == 192.0.2.10` |
+| rpcgossip.addr.port | The port the RPC Gossip packet was received on. | `rpcgossip.addr.port == 8300` |
+| rpcgossip.addr.zone | The IPv6 scoped addressing zone. | |
+| rpcgossip.tag | The tuple identifying the datacenters with which to associate the RPC Gossip header | `rpcgossip.tag == "dc-tuple:dc1:dc3"` |
+| rpcgossip.type | The RPC Gossip header type. | `rpcgossip.type == Packet` |
+| rpcraft.type | The RPC Raft message type. | `rpcraft.type == "Append Entries"` |
+| serf.label.length | The length of the Serf label | `serf.label.length >= 3` |
+| serf.label.name | The value of the Serf label | `serf.label.name == 'foo'` |
+| serf.label.type | The Serf label type. Only value of 244 is supported. | `serf.label.type == 244` |
+| serf.message.checksum | The checksum value for a Serf HasCRC message | `serf.message.type == HasCRC` |
+| serf.message.compound_length | The number of messages in a Serf Compound message | `serf.message.compound_length == 22` |
+| serf.message.encryption_length | The length of the encrypted payload in the Serf Encrypt message | `serf.message.encrypted_length >= 50` |
+| serf.message.encryption_nonce | The value of the encryption nonce for a Serf Encrypt message | `serf.message.encryption_nonce == 9a8dedabdea9ed61064601c8` |
+| serf.message.encryption_version | The encryption algorithm used for a Serf Encrypt payload | `serf.message.encryption_version == 1` |
+| serf.message.remaining_payload | The unparsed, encrypted payload of the Serf Encrypt message | `serf.message.remaining_payload` |
+| serf.message.type | The Serf message type | `serf.message.type == HasCRC` |
+| yamux.flags | The flags associated with the Yamux frame | `yamux.flags == SYN` |
+| yamux.length | The length of the payload following the Yamux Data frame | `yamux.length == 999` |
+| yamux.previous_frame | The ID of the previous Yamux frame in this stream | `yamux.previous_frame == 879` |
+| yamux.next_frame | The ID of the next Yamux frame in this stream | `yamux.next_frame == 1132` |
+| yamux.stream_id | The ID of a Yamux stream | `yamux.stream_id == 3` |
+| yamux.type | The Yamux packet type | `yamux.type == WindowUpdate` |
+| yamux.version | The Yamux protocol version (currently always zero) | `yamux.version == 0` |

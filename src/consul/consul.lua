@@ -170,6 +170,8 @@ function proto_consul.prefs_changed()
 end
 
 -- Test whether this is a RPC packet on port the configured RPC port
+-- @tparam Pinfo pinfo An object containing packet information
+-- @treturn boolean True if the packet is a RPC packet on the configured RPC port, otherwise false
 local function is_consul_rpc(pinfo)
     local tcp_proto = 2
 
@@ -207,7 +209,7 @@ end
 --- Dissector for the Consul protocol
 -- Parses a Tvb to determine if it is a Consul RPC packet or one of its
 -- multiplexed protocols.
--- @function consul.dissector
+-- @function proto_consul.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information

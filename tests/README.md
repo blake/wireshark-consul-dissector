@@ -41,7 +41,11 @@ There are two test suites available.
 * `test_utils.lua` - Tests the utility functions that are shared by multiple
   dissectors.
 
-### Example output from protocol dissection tests
+### Protocol dissection tests
+
+The protocol dissection tests help validate that test data matches the expected
+output when decoded. The protocol tests are ran by executing the
+`test_decode.lua` file. For example:
 
 ```shell-session
 $ lua test_decode.lua
@@ -55,6 +59,17 @@ Duplicate dissectors http-over-tls and http-over-tcp for protocol HTTP in dissec
 .
 Ran 6 tests in 0.006 seconds, 6 successes, 0 failures
 OK
+```
+
+The decoded packet payloads are compared against known good output located under
+the `tests/tshark_tests/protocol_data/expected/` directory.
+
+In order to update these files after making improvements and/or fixes to the
+dissection plugins, run the `test_decode.lua` program with the
+`GENERATE_PROTOCOL_DATA` environment variable equal to `1`.
+
+```shell-session
+GENERATE_PROTOCOL_DATA=1 lua test_decode.lua
 ```
 
 ### Example output from utilities unit tests
@@ -109,7 +124,6 @@ $ tree -P '*.pcapng' -L 1
 
 1 directory, 10 files
 ```
-
 
 <!-- Reference style links -->
 [LuaUnit]: https://github.com/bluebird75/luaunit/

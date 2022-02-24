@@ -81,7 +81,7 @@ proto_rpc_gossip.prefs.debug = Pref.enum("Debug level", default_settings.debug_l
 local pos = 0
 
 --- Get the specified number of bytes from the Tvb and advance the cursor position
--- @function util.get_bytes
+-- @function get_bytes
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam number length The number of bytes to get from the buffer
@@ -116,8 +116,8 @@ local function set_protocol(pinfo)
     pinfo.columns.protocol:fence()
 end
 
--- Take the given tvb and return a modified format that is suitable for adding
--- to the protocol tree.
+--- Take the given tvb and return a modified format that is suitable for adding
+--- to the protocol tree.
 -- @function transform_header
 --
 -- @tparam ByteArray byte_arr A ByteArray containing the header bytes

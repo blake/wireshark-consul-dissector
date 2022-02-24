@@ -30,7 +30,7 @@ end
 
 --- Dissector for the RPCTLS protocol
 -- Parses a Tvb to determine if it is a RPCTLS type
--- @function proto_tls_insecure.dissector
+-- @function proto_tls.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information

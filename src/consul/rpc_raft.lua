@@ -101,7 +101,7 @@ local function is_raft_rpc(tvb)
 end
 
 --- Get the specified number of bytes from the Tvb and advance the cursor position
--- @function util.get_bytes
+-- @function get_bytes
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam number length The number of bytes to get from the buffer

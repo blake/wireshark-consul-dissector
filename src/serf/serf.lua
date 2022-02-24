@@ -135,6 +135,9 @@ end
 
 --- Ensure that all of the TCP packet is present
 -- @function has_complete_compound_payload
+-- @tparam Pinfo pinfo An object containing packet information
+-- @tparam number buffer_length The length of the buffer
+-- @tparam number compound_length The expected length of the compound message
 -- @treturn boolean true if the packet is complete, false otherwise
 local function has_complete_compound_payload(pinfo, buffer_length, compound_length)
 
@@ -303,7 +306,7 @@ end
 
 --- Dissector for the Serf protocol
 -- Parses a Tvb to determine if it is a Serf packet
--- @function serf.dissector
+-- @function proto_serf.dissector
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information
