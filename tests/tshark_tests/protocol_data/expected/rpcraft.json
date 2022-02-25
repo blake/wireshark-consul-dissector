@@ -42,7 +42,7 @@
         },
         "_ws.lua.fake": "",
         "rpcraft": {
-          "raft.type": "0x01",
+          "rpcraft.type": "0x01",
           "rpcraft": {
             "msgpack.string": "[ Null ]",
             "msgpack.string_tree": {
@@ -109,7 +109,7 @@
         },
         "_ws.lua.fake": "",
         "rpcraft": {
-          "raft.type": "0xa0",
+          "rpcraft.type": "0xa0",
           "rpcraft": {
             "msgpack.string": "[ Null ]",
             "msgpack.string_tree": {
@@ -185,7 +185,7 @@
         },
         "_ws.lua.fake": "",
         "rpcraft": {
-          "raft.type": "0x00",
+          "rpcraft.type": "0x00",
           "rpcraft": {
             "msgpack.string": "[ Null ]",
             "msgpack.string_tree": {
