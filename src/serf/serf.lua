@@ -15,7 +15,7 @@ set_plugin_info({
     description = [[
     Wireshark plugin for dissecting HashiCorp Consul's gossip communication.
     ]],
-    repository = "https://github.com/blake/wireshark-plugin-consul.git",
+    repository = "https://github.com/blake/wireshark-consul-dissector.git",
     version = "0.0.1"
 })
 
