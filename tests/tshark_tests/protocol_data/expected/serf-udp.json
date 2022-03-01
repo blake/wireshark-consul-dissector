@@ -582,7 +582,6 @@
         "serf": {
           "serf": {
             "serf.message.type": "244",
-            "serf.label.type": "244",
             "serf.label.length": "3",
             "serf.label.name": "bar"
           },
@@ -644,7 +643,6 @@
         "serf": {
           "serf": {
             "serf.message.type": "244",
-            "serf.label.type": "244",
             "serf.label.length": "3",
             "serf.label.name": "bar"
           },
@@ -703,7 +701,6 @@
         "serf": {
           "serf": {
             "serf.message.type": "244",
-            "serf.label.type": "244",
             "serf.label.length": "3",
             "serf.label.name": "foo"
           },
@@ -750,7 +747,6 @@
         "serf": {
           "serf": {
             "serf.message.type": "244",
-            "serf.label.type": "244",
             "serf.label.length": "3",
             "serf.label.name": "foo"
           },
@@ -818,7 +814,6 @@
         "serf": {
           "serf": {
             "serf.message.type": "244",
-            "serf.label.type": "244",
             "serf.label.length": "3",
             "serf.label.name": "foo"
           },

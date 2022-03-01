@@ -88,9 +88,6 @@ local sizeOf = {
     length = 4
 }
 
--- ID of the current TCP stream
-local stream_index = Field.new("tcp.stream")
-
 -- Get the dissector for decoding MessagePack
 local msgpack_dissector = Dissector.get("msgpack")
 
@@ -124,6 +121,13 @@ local yamux_fields = {
 
 -- Add the defined fields to the protocol
 proto_yamux.fields = yamux_fields
+
+-- Fields to retrieve protocol data from the packet tree after dissection
+--
+-- ID of the current TCP stream
+local stream_index = Field.new("tcp.stream")
+local yamux_flags_field = Field.new("yamux.flags")
+local yamux_stream_id_field = Field.new("yamux.stream_id")
 
 -- Track information related to Yamux streams
 -- Map Yamux stream IDs to multiplexed protocol type.
@@ -229,8 +233,8 @@ end
 --- of the TCP and Yamux stream IDs. It is used to uniquely identify a Yamux
 --- stream in the packet tree.
 -- @treturn string A string representing a unique ID for this Yamux stream
-local function construct_stream_id(yamux_id)
-    return string.format("%s-%s", get_stream_index(), yamux_id)
+local function make_unique_stream_id()
+    return string.format("%s-%s", get_stream_index(), yamux_stream_id_field().value)
 end
 
 --- Returns the expected length of a Yamux header
@@ -300,12 +304,16 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     -- Get the 8-bit version identifier from the header
     subtree:add(fields.version, get_bytes(yamux_header, sizeOf.version))
     subtree:add(fields.type, get_bytes(yamux_header, sizeOf.type))
+    subtree:add(fields.flags, get_bytes(yamux_header, sizeOf.flags))
+    subtree:add(fields.stream_id, get_bytes(yamux_header, sizeOf.stream_id))
+    subtree:add(fields.length, get_bytes(yamux_header, sizeOf.length))
 
-    local flags = get_bytes(yamux_header, sizeOf.flags)
-    local yamux_stream_id = get_bytes(yamux_header, sizeOf.stream_id)
+    -- Obtain a few fields that were added to the dissection tree
+    local flags = yamux_flags_field().value
 
-    -- Update the current stream ID
-    current_stream_id = construct_stream_id(yamux_stream_id:uint())
+    -- Use a unique ID to track packets for this Yamux stream across all TCP
+    -- sessions
+    current_stream_id = make_unique_stream_id()
 
     if yamux_stream_info[current_stream_id] == nil then
         yamux_stream_info[current_stream_id] = {
@@ -314,14 +322,10 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
         }
     end
 
-    if flags:uint() == HDR_FLAG_NAME_MAP.SYN then
+    if flags == HDR_FLAG_NAME_MAP.SYN then
         -- This is the start of a new Yamux conversation. Set the protocol.
         set_protocol(pinfo)
     end
-
-    subtree:add(fields.flags, flags)
-    subtree:add(fields.stream_id, yamux_stream_id)
-    subtree:add(fields.length, get_bytes(yamux_header, sizeOf.length))
 
     -- Get the current stream's mapping of frame numbers to previous and next
     -- frame numbers
@@ -362,14 +366,14 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     local next_frame = stream_prev_next_map[current_frame].next
 
     if previous_frame then
-        if flags:uint() == HDR_FLAG_NAME_MAP.SYN then
+        if flags == HDR_FLAG_NAME_MAP.SYN then
             subtree:add(fields.prev_frame_ack, previous_frame):set_generated()
         else
             subtree:add(fields.prev_frame_request, previous_frame):set_generated()
         end
     end
     if next_frame then
-        if flags:uint() == HDR_FLAG_NAME_MAP.SYN then
+        if flags == HDR_FLAG_NAME_MAP.SYN then
             subtree:add(fields.next_frame_ack, next_frame):set_generated()
         else
             subtree:add(fields.next_frame_request, next_frame):set_generated()

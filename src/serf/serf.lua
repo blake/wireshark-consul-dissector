@@ -23,7 +23,6 @@ set_plugin_info({
 package.prepend_path("plugins/consul")
 local util = require("util")
 
-
 -----------------------------------
 -- Tables to map values to names --
 -----------------------------------
@@ -111,6 +110,13 @@ local serf_fields = {
 -- Add the defined fields to the protocol
 proto_serf.fields = serf_fields
 
+-- Fields to retrieve protocol data from the packet tree after dissection
+local serf_checksum_field = Field.new("serf.message.checksum")
+local serf_compound_length_field = Field.new("serf.message.compound_length")
+local serf_encrypted_length_field = Field.new("serf.message.encrypted_length")
+local serf_encryption_version_field = Field.new("serf.message.encryption_version")
+local serf_label_length_field = Field.new("serf.label.length")
+
 --- Construct the name for the Serf message based on the message type
 -- @function construct_serf_message_name
 --
@@ -167,9 +173,11 @@ local function parse_compound_msg(tvb, subtree, serf_fields)
 
     subtree:add(serf_fields.compound_length, numParts)
 
+    local compound_num_parts = serf_compound_length_field().value
+
     -- Decode the lengths
     local lengths = {}
-    for i = 0, numParts:uint() - 1, 1 do
+    for i = 0, compound_num_parts - 1, 1 do
         local length = get_bytes(tvb, sizeOf.compound_length):uint()
         lengths[i + 1] = length
     end
@@ -182,23 +190,21 @@ end
 -- @tparam TreeItem subtree An object representing the subtree to append packet details
 -- @tparam {ProtoField,...} fields Table containing ProtoField objects for this protocol
 local function parse_encrypt_msg(tvb, subtree, serf_fields)
-    dprint(tvb:reported_length_remaining())
-    local encrypted_header_len = sizeOf.message_type + sizeOf.encrypt_length + sizeOf.encrypt_version +
-                                     sizeOf.encrypt_nonce
-    subtree:set_len(encrypted_header_len)
-
     -- TODO: Fix parsing of encrypted payload length
     subtree:add(serf_fields.encrypted_length, get_bytes(tvb, sizeOf.encrypt_length))
+    subtree:add(serf_fields.encryption_version, get_bytes(tvb, sizeOf.encrypt_version))
+    subtree:add(serf_fields.encryption_nonce, get_bytes(tvb, sizeOf.encrypt_nonce))
 
-    local version = get_bytes(tvb, sizeOf.encrypt_version)
-    subtree:add(serf_fields.encryption_version, version)
+    local encryption_version_field = serf_encryption_version_field()
 
-    if version:uint() == 0 then
-        subtree:add(serf_fields.encryption_nonce, get_bytes(tvb, sizeOf.encrypt_nonce))
-    elseif version:uint() == 1 then
-        subtree:add(serf_fields.encryption_nonce, get_bytes(tvb, sizeOf.encrypt_nonce))
+    if encryption_version_field.value == 1 then
         subtree:add(serf_fields.remaining_payload, tvb(pos))
     end
+
+    local encrypted_header_len =
+        sizeOf.message_type + serf_encrypted_length_field().len + encryption_version_field.len + sizeOf.encrypt_nonce
+    subtree:set_len(encrypted_header_len)
+
 end
 
 --- Parse a Serf message with a CRC
@@ -207,12 +213,10 @@ end
 -- @tparam Pinfo pinfo An object containing packet information
 -- @tparam {ProtoField,...} fields Table containing ProtoField objects for this protocol
 local function parse_hascrc_msg(tvb, subtree, serf_fields)
-    subtree:set_len(pos + sizeOf.crc_length)
-
-    local checksum = get_bytes(tvb, sizeOf.crc_length)
-
     -- TODO (blake): Validate checksum
-    subtree:add(serf_fields.checksum, checksum)
+    subtree:add(serf_fields.checksum, get_bytes(tvb, sizeOf.crc_length))
+
+    subtree:set_len(sizeOf.message_type + serf_checksum_field().len)
 end
 
 -- Debug log levels
@@ -361,21 +365,20 @@ function proto_serf.dissector(tvb, pinfo, tree)
     end
     pinfo.columns.protocol:set(proto_serf.name)
 
+    -- Compare the integer value of the retrieved byte to the message type name
+    -- table. This comparison must always be done using the most recently parsed
+    -- message type, not the Fieldinfo object for the message type field because
+    -- the Fieldinfo object is not updated when looping back to decode embedded
+    -- messages.
     if message_type_int == MSG_TYPE_NAME_MAP.Label then
         -- Parse the label length
-        local label_length = get_bytes(tvb, sizeOf.label_length)
+        message_tree:add(serf_fields.label_length, get_bytes(tvb, sizeOf.label_length))
+        message_tree:add(serf_fields.label_name, get_bytes(tvb, serf_label_length_field().value))
 
         -- Set the size of this Tvb
-        local label_header_length = sizeOf.message_type + sizeOf.label_length + label_length:uint()
+        local label_header_length = sizeOf.message_type + serf_label_length_field().len +
+                                        serf_label_length_field().value
         message_tree:set_len(label_header_length)
-
-        message_tree:add(serf_fields.label_type, message_type)
-        message_tree:add(serf_fields.label_length, label_length)
-
-        -- Parse the label name
-        local name_length = label_length:uint()
-        local name = get_bytes(tvb, name_length)
-        message_tree:add(serf_fields.label_name, name)
 
         -- Restart message processing to decode the wrapped message(s)
         goto process_serf_message
