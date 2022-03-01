@@ -398,16 +398,7 @@
         "tcp": {
           "filtered": "tcp"
         },
-        "_ws.lua.fake": "",
-        "serf": {
-          "serf": {
-            "serf.message.type": "7",
-            "serf.message.compound_length": "2"
-          },
-          "serf": {
-            "serf.message.type": "2"
-          }
-        }
+        "_ws.lua.fake": ""
       }
     }
   },
@@ -464,46 +455,7 @@
             }
           }
         },
-        "_ws.lua.fake": "",
-        "serf": {
-          "serf": {
-            "serf.message.type": "7",
-            "serf.message.compound_length": "2"
-          },
-          "serf": {
-            "serf.message.type": "2",
-            "serf": {
-              "msgpack.integer.u8": "8"
-            }
-          }
-        },
-        "_ws.lua.fake": "",
-        "serf": {
-          "serf": {
-            "serf.message.type": "7",
-            "serf.message.compound_length": "2"
-          },
-          "serf": {
-            "serf.message.type": "2",
-            "serf": {
-              "msgpack.integer.u8": "8"
-            }
-          }
-        },
-        "_ws.lua.fake": "",
-        "data": {
-          "filtered": "data"
-        },
-        "_ws.lua.fake": "",
-        "serf": "Serf gossip protocol",
-        "_ws.lua.fake": "",
-        "serf": "Serf gossip protocol",
-        "_ws.lua.fake": "",
-        "serf": "Serf gossip protocol",
-        "_ws.lua.fake": "",
-        "data": {
-          "filtered": "data"
-        }
+        "_ws.lua.fake": ""
       }
     }
   },
@@ -725,55 +677,6 @@
             }
           },
           "serf": {
-            "serf.message.type": "8"
-          }
-        }
-      }
-    }
-  },
-  {
-    "_type": "doc",
-    "_score": null,
-    "_source": {
-      "layers": {
-        "frame": {
-          "filtered": "frame"
-        },
-        "eth": {
-          "filtered": "eth"
-        },
-        "ip": {
-          "filtered": "ip"
-        },
-        "tcp": {
-          "filtered": "tcp"
-        },
-        "tcp.segments": {
-          "filtered": "tcp.segments"
-        },
-        "_ws.lua.fake": "",
-        "serf": {
-          "serf": {
-            "serf.message.type": "244",
-            "serf.label.length": "3",
-            "serf.label.name": "foo"
-          },
-          "serf": {
-            "serf.message.type": "7",
-            "serf.message.compound_length": "2"
-          },
-          "serf": {
-            "serf.message.type": "2",
-            "serf": {
-              "msgpack.string": "Payload",
-              "msgpack.string_tree": {
-                "msgpack.type": "0xa7",
-                "msgpack.string.len": "0",
-                "msgpack.string": "Payload"
-              }
-            }
-          },
-          "serf": {
             "serf.message.type": "8",
             "serf": {
               "msgpack.string": "[ Null ]",
@@ -813,13 +716,71 @@
               }
             }
           }
+        }
+      }
+    }
+  },
+  {
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "filtered": "frame"
+        },
+        "eth": {
+          "filtered": "eth"
+        },
+        "ip": {
+          "filtered": "ip"
+        },
+        "tcp": {
+          "filtered": "tcp"
         },
         "_ws.lua.fake": "",
         "serf": {
           "serf": {
-            "serf.message.type": "3",
+            "serf.message.type": "244",
+            "serf.label.length": "3",
+            "serf.label.name": "foo"
+          },
+          "serf": {
+            "serf.message.type": "9",
             "serf": {
-              "msgpack.integer.u8": "102"
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "Algo",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Algo"
+                  },
+                  "msgpack.integer.u8": "0"
+                },
+                "": {
+                  "msgpack.string": "Buf",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa3",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Buf"
+                  },
+                  "msgpack.string": "\u0007\u0006",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xda",
+                    "msgpack.string.len": "319",
+                    "msgpack.string": "\u0007\u0006",
+                    "msgpack.string_tree": {
+                      "_ws.expert": {
+                        "_ws.string.trailing_stray_characters": "",
+                        "_ws.expert.message": "Trailing stray characters",
+                        "_ws.expert.severity": "6291456",
+                        "_ws.expert.group": "83886080"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

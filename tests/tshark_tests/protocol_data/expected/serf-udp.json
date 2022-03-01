@@ -720,7 +720,44 @@
             }
           },
           "serf": {
-            "serf.message.type": "8"
+            "serf.message.type": "8",
+            "serf": {
+              "msgpack.string": "[ Null ]",
+              "msgpack.string_tree": {
+                "": {
+                  "msgpack.string": "LTime",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa5",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "LTime"
+                  },
+                  "msgpack.integer.u8": "11"
+                },
+                "": {
+                  "msgpack.string": "Node",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa4",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Node"
+                  },
+                  "msgpack.string": "4f3c9b616d62",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xac",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "4f3c9b616d62"
+                  }
+                },
+                "": {
+                  "msgpack.string": "Prune",
+                  "msgpack.string_tree": {
+                    "msgpack.type": "0xa5",
+                    "msgpack.string.len": "0",
+                    "msgpack.string": "Prune"
+                  },
+                  "msgpack.boolean": "0"
+                }
+              }
+            }
           }
         }
       }

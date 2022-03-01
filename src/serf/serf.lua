@@ -117,6 +117,8 @@ local serf_encrypted_length_field = Field.new("serf.message.encrypted_length")
 local serf_encryption_version_field = Field.new("serf.message.encryption_version")
 local serf_label_length_field = Field.new("serf.label.length")
 
+local tcp_pdu_size_field = Field.new("tcp.pdu.size")
+
 --- Construct the name for the Serf message based on the message type
 -- @function construct_serf_message_name
 --
@@ -163,7 +165,6 @@ end
 -- @tparam {ProtoField,...} fields Table containing ProtoField objects for this protocol
 -- @treturn {number,...} A list of the byte lengths for each message
 local function parse_compound_msg(tvb, subtree, serf_fields)
-    subtree:set_len(pos + sizeOf.compound_length)
     local numParts = get_bytes(tvb, sizeOf.compound_num_parts)
 
     -- Ensure there are enough bytes to read the number of parts
@@ -181,6 +182,9 @@ local function parse_compound_msg(tvb, subtree, serf_fields)
         local length = get_bytes(tvb, sizeOf.compound_length):uint()
         lengths[i + 1] = length
     end
+
+    -- Set the length of the compound message
+    subtree:set_len(sizeOf.message_type + sizeOf.compound_num_parts + (compound_num_parts * sizeOf.compound_length))
 
     return lengths
 end
@@ -308,26 +312,52 @@ function proto_serf.prefs_changed()
     end
 end
 
---- Dissector for the Serf protocol
--- Parses a Tvb to determine if it is a Serf packet
--- @function proto_serf.dissector
+--- Determine the length of a compound message
+--
+-- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
+-- @tparam Pinfo pinfo An object containing packet information
+-- @tparam number offset An offset number of the index of the first byte of the PDU
+-- @treturn number The number of bytes processed by this dissector
+local function get_compound_message_length(tvb, _, offset)
+    -- Start the cursor the position after the message type
+    local cursor = 1
+    local numParts = tvb:range(cursor, sizeOf.compound_num_parts):uint()
+
+    cursor = cursor + sizeOf.compound_num_parts
+
+    -- Ensure there are enough bytes to read the number of parts
+    if tvb:len(cursor) < numParts * sizeOf.compound_length then
+        return 0
+    end
+
+    -- Decode the lengths
+    local total_length = sizeOf.message_type + sizeOf.compound_num_parts
+    for i = 0, numParts - 1, 1 do
+        local length = tvb:range(cursor, sizeOf.compound_length):uint()
+        cursor = cursor + sizeOf.compound_length
+        total_length = total_length + length
+    end
+
+    return total_length
+end
+
+-- Parses a Serf message
+-- @function dissect_message
 --
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam Pinfo pinfo An object containing packet information
 -- @tparam TreeItem tree An object representing the root of the packet tree
 -- @treturn number The number of bytes processed by this dissector
-function proto_serf.dissector(tvb, pinfo, tree)
-    -- Get the length of the packet
-    local buffer_length = tvb:captured_len()
-
-    -- Skip processing of packets that are empty
-    if buffer_length == 0 then
-        dprint2("Skipping empty packet")
-        return 0
-    end
-
+local function dissect_message(tvb, pinfo, tree)
     -- Reset cursor position
     pos = 0
+
+    -- Return if this packet is a segment in a reassembled frame, and the size
+    -- of this packet does not equal the length of the reassembled frame
+    local tcp_pdu_size = tcp_pdu_size_field()
+    if tcp_pdu_size ~= nil and tvb:captured_len() ~= tcp_pdu_size.value then
+        return
+    end
 
     -- Declare a variable to hold the compound message lengths
     -- If this is not empty, we need to process each of these messages
@@ -394,7 +424,6 @@ function proto_serf.dissector(tvb, pinfo, tree)
         -- Restart message processing to decode the checksummed message
         goto process_serf_message
     elseif message_type_int == MSG_TYPE_NAME_MAP.Compound then
-        -- This is a compound message
         compound_message_lengths = parse_compound_msg(tvb, message_tree, serf_fields)
 
         -- Restart message processing to decode the list of compound messages
@@ -408,7 +437,11 @@ function proto_serf.dissector(tvb, pinfo, tree)
         -- Get the length of the compound message
         local cp_message_len = table.remove(compound_message_lengths, 1)
 
-        if not has_complete_compound_payload(pinfo, tvb(pos):len(), cp_message_len) then
+        -- Get the payload for this compound message
+        -- Need to subtract the size of the message type field from the current
+        -- cursor position in order to get the correct payload for the compound
+        -- message
+        if not has_complete_compound_payload(pinfo, tvb(pos - sizeOf.message_type):len(), cp_message_len) then
             return
         end
 
@@ -442,6 +475,45 @@ function proto_serf.dissector(tvb, pinfo, tree)
     end
 
     return false
+end
+
+--- Dissector for the Serf protocol
+-- Parses a Tvb to determine if it is a Serf packet
+-- @function proto_serf.dissector
+--
+-- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
+-- @tparam Pinfo pinfo An object containing packet information
+-- @tparam TreeItem tree An object representing the root of the packet tree
+-- @treturn number The number of bytes processed by this dissector
+function proto_serf.dissector(tvb, pinfo, tree)
+    -- Get the length of the packet
+    local buffer_length = tvb:captured_len()
+
+    -- Skip processing of packets that are empty
+    if buffer_length == 0 then
+        dprint2("Skipping empty packet")
+        return 0
+    end
+
+    -- Compound Messages can be fragmented across multiple packets. First check
+    -- if this is a compound message, and if so, determine the length of the
+    -- message. Once confident the entire payload has been received, dissect the
+    -- packet.
+
+    -- If the packet is a TCP packet
+    if pinfo.port_type == 2 then
+        local message_type = tvb:range(0, sizeOf.message_type):uint()
+
+        if message_type == MSG_TYPE_NAME_MAP.Compound then
+            -- Call dissect_tcp_pdus to first reassemble the packet, if
+            -- fragmented, before dissecting the payload
+            local min_header_size = 2
+            return dissect_tcp_pdus(tvb, tree, min_header_size, get_compound_message_length, dissect_message)
+        end
+    end
+
+    -- Dissect all non-TCP packets or non-compound messages as a single packet
+    return dissect_message(tvb, pinfo, tree)
 end
 
 -- Dissector for the Serf protocol
