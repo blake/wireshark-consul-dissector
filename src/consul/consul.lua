@@ -128,7 +128,7 @@ function proto_consul.prefs_changed()
         default_settings.dns_port = proto_consul.prefs.dns_port
 
         -- add new one, if not 0
-        if default_settings.port ~= 0 then
+        if default_settings.dns_port ~= 0 then
             tcp_port_dissector_table:add(default_settings.dns_port, dns)
             udp_port_dissector_table:add(default_settings.dns_port, dns)
         end
@@ -146,7 +146,7 @@ function proto_consul.prefs_changed()
         default_settings.http_port = proto_consul.prefs.http_port
 
         -- add new one, if not 0
-        if default_settings.port ~= 0 then
+        if default_settings.http_port ~= 0 then
             tcp_port_dissector_table:set(default_settings.http_port, http_tcp)
         end
     end
@@ -163,7 +163,7 @@ function proto_consul.prefs_changed()
         default_settings.https_port = proto_consul.prefs.https_port
 
         -- add new one, if not 0
-        if default_settings.port ~= 0 then
+        if default_settings.https_port ~= 0 then
             tcp_port_dissector_table:set(default_settings.https_port, http_tls)
         end
     end
