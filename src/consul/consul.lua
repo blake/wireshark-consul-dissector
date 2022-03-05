@@ -52,6 +52,7 @@ local default_settings = {
     dns_port = 8600,
     http_port = 8500,
     https_port = 8501,
+    grpc_port = 8502,
 }
 
 -- Set up debugging functions
@@ -76,6 +77,8 @@ proto_consul.prefs.http_port = Pref.uint("HTTP port number", default_settings.ht
     "The TCP/UDP port number for Consul's HTTP API")
 proto_consul.prefs.https_port = Pref.uint("HTTPS port number", default_settings.https_port,
     "The TCP/UDP port number for Consul's HTTPS API")
+proto_consul.prefs.grpc_port = Pref.uint("gRPC port number", default_settings.grpc_port,
+    "The TCP/UDP port number for Consul's gRPC/xDS server")
 proto_consul.prefs.rpc_port = Pref.uint("RPC port number", default_settings.rpc_port,
     "The TCP port number for Consul's RPC traffic")
 proto_consul.prefs.heuristic = Pref.bool("Heuristic enabled", default_settings.heuristic_enabled,
@@ -167,6 +170,23 @@ function proto_consul.prefs_changed()
             tcp_port_dissector_table:set(default_settings.https_port, http_tls)
         end
     end
+
+    -- Handle gRPC port change
+    if default_settings.grpc_port ~= proto_consul.prefs.grpc_port then
+        local http2 = Dissector.get("http2")
+
+        -- remove old one, if not 0
+        if default_settings.grpc_port ~= 0 then
+            tcp_port_dissector_table:remove(default_settings.grpc_port, http2)
+        end
+        -- set our new default
+        default_settings.grpc_port = proto_consul.prefs.grpc_port
+
+        -- add new one, if not 0
+        if default_settings.grpc_port ~= 0 then
+            tcp_port_dissector_table:set(default_settings.grpc_port, http2)
+        end
+    end
 end
 
 -- Test whether this is a RPC packet on port the configured RPC port
@@ -203,6 +223,11 @@ function proto_consul.init()
     if default_settings.https_port ~= 0 then
         local http_tls = Dissector.get("http-over-tls")
         tcp_port_dissector_table:set(default_settings.https_port, http_tls)
+    end
+
+    if default_settings.grpc_port ~= 0 then
+        local http2 = Dissector.get("http2")
+        tcp_port_dissector_table:set(default_settings.grpc_port, http2)
     end
 end
 
