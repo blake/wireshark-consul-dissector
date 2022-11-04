@@ -178,8 +178,7 @@ proto_yamux.prefs.heuristic = Pref.bool("Heuristic enabled", default_settings.he
 proto_yamux.prefs.debug = Pref.enum("Debug level", default_settings.debug_level, "The debug level verbosity",
     util.debug.pref_enum)
 proto_yamux.prefs.ports = Pref.range("Port(s)", default_settings.ports,
-    "Set the TCP port(s) for Yamux, default is 443", 65535)
-
+    "Set the TCP port(s) for Yamux, default is 443. That ports are used only with disabled heuristics analysis", 65535)
 
 -- Got from zabbixagent
 local function enableDissector()
