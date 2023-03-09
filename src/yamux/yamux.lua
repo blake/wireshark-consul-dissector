@@ -21,6 +21,10 @@ local util = require("util")
 -- RPC type
 local rpc_type = "0x04"
 
+-- Default window value
+-- 256 KB: https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#flow-control
+local window_start_value = 256 * 1024
+
 -- Map Yamux header type to variables
 local hdr_type = {
     DATA = 0x00,
@@ -120,6 +124,11 @@ local yamux_fields = {
     recv_window_delta = ProtoField.uint32("yamux.recv_window_delta", "Receive window delta", base.DEC),
     ping_payload = ProtoField.uint32("yamux.ping_payload", "Ping payload", base.HEX),
     error_code = ProtoField.uint32("yamux.error_code", "Error code", base.DEC),
+
+    window_size_client_before = ProtoField.uint32("yamux.window_size.client.before", "Client window size (before)", base.DEC),
+    window_size_server_before = ProtoField.uint32("yamux.window_size.server.before", "Server window size (before)", base.DEC),
+    window_size_client_after = ProtoField.uint32("yamux.window_size.client.after", "Client window size (after)", base.DEC),
+    window_size_server_after = ProtoField.uint32("yamux.window_size.server.after", "Server window size (after)", base.DEC),
 
     prev_frame_request = ProtoField.framenum("yamux.previous_frame", "Previous frame (request)", base.NONE,
         frametype.REQUEST),
@@ -352,14 +361,18 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#length-field
     local lenBytes = get_bytes(yamux_header, sizeOf.length)
-    local lenValue = 0
+    local lenValue = lenBytes:uint()
     subtree:add(fields.length, lenBytes)
+
+    local payloadLen = 0
+    local windowDelta = 0
 
     if typeValue == hdr_type.DATA then
         subtree:add(fields.payload_length, lenBytes):set_generated()
-        lenValue = lenBytes:uint()
+        payloadLen = lenValue
     elseif typeValue == hdr_type.WINDOW_UPDATE then
         subtree:add(fields.recv_window_delta, lenBytes):set_generated()
+        windowDelta = lenValue
     elseif typeValue == hdr_type.PING then
         subtree:add(fields.ping_payload, lenBytes):set_generated()
     elseif typeValue == hdr_type.GO_AWAY then
@@ -442,6 +455,39 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Update the last frame number that was processed by this dissector
     yamux_stream_info[current_stream_id].last_frame = current_frame
+
+    -- Window values recalculation
+    local new_server_window_size = window_start_value
+    local new_client_window_size = window_start_value
+    local is_ping_packet = yamux_stream_id_field().value == 0
+
+    if previous_frame then
+        -- Use prev values, if prev frame is presented
+        new_server_window_size = yamux_stream_info[current_stream_id].server_window_size
+        new_client_window_size = yamux_stream_info[current_stream_id].client_window_size
+    end
+
+    subtree:add(fields.window_size_server_before, new_server_window_size):set_generated()
+    subtree:add(fields.window_size_client_before, new_client_window_size):set_generated()
+
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    if is_ping_packet then
+        dprint2("Packet", current_stream_id, "is ping one")
+    elseif yamux_stream_id_field().value % 2 == 0 then
+        dprint2("Packet", current_stream_id, "is server one")
+        new_server_window_size = new_server_window_size + windowDelta
+        new_client_window_size = new_client_window_size - payloadLen
+    else
+        dprint2("Packet", current_stream_id, "is client one")
+        new_client_window_size = new_client_window_size + windowDelta
+        new_server_window_size = new_server_window_size - payloadLen
+    end
+
+    yamux_stream_info[current_stream_id].server_window_size = new_server_window_size
+    yamux_stream_info[current_stream_id].client_window_size = new_client_window_size
+
+    subtree:add(fields.window_size_server_after, new_server_window_size):set_generated()
+    subtree:add(fields.window_size_client_after, new_client_window_size):set_generated()
 
     return true
 end
