@@ -21,16 +21,24 @@ local util = require("util")
 -- RPC type
 local rpc_type = "0x04"
 
--- Map Yamux header type to readable name
-local HDR_TYPE_MAP = {
-    [0x00] = "Data",          -- Used to transmit data. May transmit zero length payloads depending on the flags.
-    [0x01] = "WindowUpdate", -- Used to updated the senders receive window size.
-                              -- This is used to implement per-session flow control.
-    [0x02] = "Ping",          -- Used to measure RTT. It can also be used to heart-beat and do keep-alives over TCP.
-    [0x03] = "GoAway",       -- Used to close a session.
+-- Map Yamux header type to variables
+local hdr_type = {
+    DATA = 0x00,
+    WINDOW_UPDATE = 0x01,
+    PING = 0x02,
+    GO_AWAY = 0x03,
 }
 
 -- Map Yamux header type to readable name
+local HDR_TYPE_MAP = {
+    [hdr_type.DATA] = "Data", -- Used to transmit data. May transmit zero length payloads depending on the flags.
+    [hdr_type.WINDOW_UPDATE] = "WindowUpdate", -- Used to updated the senders receive window size.
+        -- This is used to implement per-session flow control.
+    [hdr_type.PING] = "Ping", -- Used to measure RTT. It can also be used to heart-beat and do keep-alives over TCP.
+    [hdr_type.GO_AWAY] = "GoAway", -- Used to close a session.
+}
+
+-- Map Yamux header flag to readable name
 local HDR_FLAG_MAP = {
     [0x0000] = "None",
     [0x0001] = "SYN", -- Signals the start of a new stream. May be sent with a
@@ -108,6 +116,10 @@ local yamux_fields = {
     flags = ProtoField.uint16("yamux.flags", "Flags", base.HEX, HDR_FLAG_MAP),
     stream_id = ProtoField.uint32("yamux.stream_id", "Stream ID", base.DEC),
     length = ProtoField.uint32("yamux.length", "Length", base.DEC),
+    payload_length = ProtoField.uint32("yamux.payload_length", "Payload Length", base.DEC),
+    recv_window_delta = ProtoField.uint32("yamux.recv_window_delta", "Receive window delta", base.DEC),
+    ping_payload = ProtoField.uint32("yamux.ping_payload", "Ping payload", base.HEX),
+    error_code = ProtoField.uint32("yamux.error_code", "Error code", base.DEC),
 
     prev_frame_request = ProtoField.framenum("yamux.previous_frame", "Previous frame (request)", base.NONE,
         frametype.REQUEST),
@@ -331,10 +343,30 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Get the 8-bit version identifier from the header
     subtree:add(fields.version, get_bytes(yamux_header, sizeOf.version))
-    subtree:add(fields.type, get_bytes(yamux_header, sizeOf.type))
+
+    local typeBytes = get_bytes(yamux_header, sizeOf.type)
+    local typeValue = typeBytes:uint()
+    subtree:add(fields.type, typeBytes)
     subtree:add(fields.flags, get_bytes(yamux_header, sizeOf.flags))
     subtree:add(fields.stream_id, get_bytes(yamux_header, sizeOf.stream_id))
-    subtree:add(fields.length, get_bytes(yamux_header, sizeOf.length))
+
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#length-field
+    local lenBytes = get_bytes(yamux_header, sizeOf.length)
+    local lenValue = 0
+    subtree:add(fields.length, lenBytes)
+
+    if typeValue == hdr_type.DATA then
+        subtree:add(fields.payload_length, lenBytes):set_generated()
+        lenValue = lenBytes:uint()
+    elseif typeValue == hdr_type.WINDOW_UPDATE then
+        subtree:add(fields.recv_window_delta, lenBytes):set_generated()
+    elseif typeValue == hdr_type.PING then
+        subtree:add(fields.ping_payload, lenBytes):set_generated()
+    elseif typeValue == hdr_type.GO_AWAY then
+        subtree:add(fields.error_code, lenBytes):set_generated()
+    else
+        dprint("Bad packet type")
+    end
 
     -- Obtain a few fields that were added to the dissection tree
     local flags = yamux_flags_field().value
