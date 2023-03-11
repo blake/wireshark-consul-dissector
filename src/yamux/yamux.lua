@@ -124,6 +124,7 @@ local yamux_fields = {
     recv_window_delta = ProtoField.uint32("yamux.recv_window_delta", "Receive window delta", base.DEC),
     ping_payload = ProtoField.uint32("yamux.ping_payload", "Ping payload", base.HEX),
     error_code = ProtoField.uint32("yamux.error_code", "Error code", base.HEX, GOAWAY_FLAG_MAP),
+    payload = ProtoField.bytes("yamux.payload", "Data Payload", base.NONE),
 
     window_size_client_before = ProtoField.uint32("yamux.window_size.client.before", "Client window size (before)", base.DEC),
     window_size_server_before = ProtoField.uint32("yamux.window_size.server.before", "Server window size (before)", base.DEC),
@@ -313,10 +314,10 @@ local function is_yamux(tvb)
         return false
     end
 
-    -- Verify the length of the packet is equal to the length of the Yamux
+    -- Verify the length of the packet is not less than the length of the Yamux
     -- header and the first byte (version) is 0, which should indicate that this
     -- is a Yamux stream
-    if buffer_len == header_length() and tvb:range(0, 1):int() == consts.protocol_version then
+    if buffer_len >= header_length() and tvb:range(0, 1):int() == consts.protocol_version then
         return true
     end
 
@@ -374,7 +375,7 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Do not attempt to parse header if provided packets are less than expected
     -- size
-    if yamux_header:captured_len() ~= header_length() then
+    if yamux_header:captured_len() < header_length() then
         return false
     end
 
@@ -410,6 +411,11 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
         subtree:add(fields.error_code, lenBytes):set_generated()
     else
         dprint("Bad packet type", typeValue)
+    end
+
+    -- Decoding data payload
+    if typeValue == hdr_type.DATA and yamux_header:captured_len() >= (header_length() + payloadLen) then
+        subtree:add(fields.payload, get_bytes(yamux_header, payloadLen))
     end
 
     -- Obtain a few fields that were added to the dissection tree

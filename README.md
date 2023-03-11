@@ -106,6 +106,7 @@ dissector.
 | yamux.length | The Yamux length field value | `yamux.length == 999` |
 | yamux.next_frame | The ID of the next Yamux frame in this stream | `yamux.next_frame == 1132` |
 | yamux.payload_length | The length of the payload following the Yamux Data frame | `yamux.payload_length == 1000` |
+| yamux.payload | The Yamux Data frame payload | `yamux.payload == ""` |
 | yamux.ping_payload | The Yamux Ping frame payload | `yamux.ping_payload == 0xFEEDCAFE` |
 | yamux.previous_frame | The ID of the previous Yamux frame in this stream | `yamux.previous_frame == 879` |
 | yamux.recv_window_delta | The Yamux Window Update message payload: the receive window size increasing for current Yamux Stream | `yamux.recv_window_delta == 1024` |
