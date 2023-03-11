@@ -147,6 +147,8 @@ proto_yamux.fields = yamux_fields
 --
 -- ID of the current TCP stream
 local stream_index = Field.new("tcp.stream")
+local src_port = Field.new("tcp.srcport")
+local dst_port = Field.new("tcp.dstport")
 local yamux_flags_field = Field.new("yamux.flags")
 local yamux_stream_id_field = Field.new("yamux.stream_id")
 
@@ -286,6 +288,14 @@ local function make_unique_stream_id()
     return string.format("%s-%s", get_stream_index(), yamux_stream_id_field().value)
 end
 
+--- Constructs a full stream ID for the current packet. This is a combination
+--- of the unique stream ID and source/destination TCP port. It is used to
+--- trace packets through logs
+-- @treturn string A string representing a unique ID for this Yamux stream
+local function make_full_stream_id()
+    return string.format("%s-%s-%s", make_unique_stream_id(), src_port().value, dst_port().value)
+end
+
 --- Returns the expected length of a Yamux header
 -- @treturn number The expected length of a Yamux header
 local function header_length()
@@ -322,6 +332,27 @@ local function is_yamux_rpc(tvb)
     local converted_byte = util.number_to_hex(peek_byte)
 
     return converted_byte == rpc_type
+end
+
+--- Test if the Yamux stream is default opened (neither client not server will open it)
+-- @treturn bool True if the stream was opened by default, false otherwise
+local function is_yamux_stream_default_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return yamux_stream_id_field().value == 0
+end
+
+--- Test if the Yamux stream is opened by client
+-- @treturn bool True if the stream was opened by client, false otherwise
+local function is_yamux_stream_client_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return (yamux_stream_id_field().value % 2 == 1) and not is_yamux_stream_default_created()
+end
+
+--- Test if the Yamux stream is opened by server
+-- @treturn bool True if the stream was opened by server, false otherwise
+local function is_yamux_stream_server_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return (yamux_stream_id_field().value % 2 == 0) and not is_yamux_stream_default_created()
 end
 
 --- Set the protocol for future conversations to be Yamux
@@ -378,7 +409,7 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     elseif typeValue == hdr_type.GO_AWAY then
         subtree:add(fields.error_code, lenBytes):set_generated()
     else
-        dprint("Bad packet type")
+        dprint("Bad packet type", typeValue)
     end
 
     -- Obtain a few fields that were added to the dissection tree
@@ -398,6 +429,29 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     if flags == HDR_FLAG_NAME_MAP.SYN then
         -- This is the start of a new Yamux conversation. Set the protocol.
         set_protocol(pinfo)
+    end
+
+    if is_yamux_stream_default_created() and not (typeValue == hdr_type.PING or typeValue == hdr_type.GO_AWAY) then
+        dprint("Default opened stread cannot be with type", typeValue)
+
+        -- TODO: add expert info
+    end
+
+    -- Determine client/server tcp ports for window calculation
+    local disable_window_calc_logic = false
+    if flags == HDR_FLAG_NAME_MAP.SYN then
+        if src_port().value == dst_port().value then
+            disable_window_calc_logic = true
+            dprint("TCP source port", src_port().value, "is equal to destination port", dst_port().value, ". No possibility to determine Yamux client/server direction. Window calculation logic will be disabled")
+        elseif is_yamux_stream_default_created() then
+            disable_window_calc_logic = true
+            dprint("Default opened stread cannot be opened")
+            -- TODO: add expert info
+        elseif is_yamux_stream_server_created() then
+            yamux_stream_info[current_stream_id].server_tcp_port = src_port().value
+        else
+            yamux_stream_info[current_stream_id].server_tcp_port = dst_port().value
+        end
     end
 
     -- Get the current stream's mapping of frame numbers to previous and next
@@ -456,38 +510,39 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     -- Update the last frame number that was processed by this dissector
     yamux_stream_info[current_stream_id].last_frame = current_frame
 
-    -- Window values recalculation
-    local new_server_window_size = window_start_value
-    local new_client_window_size = window_start_value
-    local is_ping_packet = yamux_stream_id_field().value == 0
+    if not (disable_window_calc_logic or is_yamux_stream_default_created()) then
+        -- Window values recalculation
+        local new_server_window_size = window_start_value
+        local new_client_window_size = window_start_value
 
-    if previous_frame then
-        -- Use prev values, if prev frame is presented
-        new_server_window_size = yamux_stream_info[current_stream_id].server_window_size
-        new_client_window_size = yamux_stream_info[current_stream_id].client_window_size
+        if previous_frame then
+            -- Use prev values, if prev frame is presented
+            new_server_window_size = yamux_stream_info[current_stream_id].server_window_size
+            new_client_window_size = yamux_stream_info[current_stream_id].client_window_size
+        end
+
+        subtree:add(fields.window_size_server_before, new_server_window_size):set_generated()
+        subtree:add(fields.window_size_client_before, new_client_window_size):set_generated()
+
+        if src_port().value == yamux_stream_info[current_stream_id].server_tcp_port then
+            dprint2("Packet", make_full_stream_id(), "is server one")
+            new_server_window_size = new_server_window_size + windowDelta
+            new_client_window_size = new_client_window_size - payloadLen
+        elseif dst_port().value == yamux_stream_info[current_stream_id].server_tcp_port then
+            dprint2("Packet", make_full_stream_id(), "is client one")
+            new_client_window_size = new_client_window_size + windowDelta
+            new_server_window_size = new_server_window_size - payloadLen
+        else
+            dprint("Yamux Stream", make_full_stream_id(), "was opened before")
+            -- TODO: add expert info
+        end
+
+        yamux_stream_info[current_stream_id].server_window_size = new_server_window_size
+        yamux_stream_info[current_stream_id].client_window_size = new_client_window_size
+
+        subtree:add(fields.window_size_server_after, new_server_window_size):set_generated()
+        subtree:add(fields.window_size_client_after, new_client_window_size):set_generated()
     end
-
-    subtree:add(fields.window_size_server_before, new_server_window_size):set_generated()
-    subtree:add(fields.window_size_client_before, new_client_window_size):set_generated()
-
-    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
-    if is_ping_packet then
-        dprint2("Packet", current_stream_id, "is ping one")
-    elseif yamux_stream_id_field().value % 2 == 0 then
-        dprint2("Packet", current_stream_id, "is server one")
-        new_server_window_size = new_server_window_size + windowDelta
-        new_client_window_size = new_client_window_size - payloadLen
-    else
-        dprint2("Packet", current_stream_id, "is client one")
-        new_client_window_size = new_client_window_size + windowDelta
-        new_server_window_size = new_server_window_size - payloadLen
-    end
-
-    yamux_stream_info[current_stream_id].server_window_size = new_server_window_size
-    yamux_stream_info[current_stream_id].client_window_size = new_client_window_size
-
-    subtree:add(fields.window_size_server_after, new_server_window_size):set_generated()
-    subtree:add(fields.window_size_client_after, new_client_window_size):set_generated()
 
     return true
 end
