@@ -533,7 +533,7 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
             new_client_window_size = new_client_window_size + windowDelta
             new_server_window_size = new_server_window_size - payloadLen
         else
-            dprint("Yamux Stream", make_full_stream_id(), "was opened before")
+            dprint("Yamux Stream", make_full_stream_id(), "packets were detected without SYN flag")
             -- TODO: add expert info
         end
 
