@@ -1,6 +1,6 @@
 # wireshark-consul-dissector
 
-A Wireshark dissector for HashiCorp [Consul](https://www.consul.io/), written in
+A Wireshark dissector for HashiCorp [Consul](https://www.consul.io/) and HashiCorp [Yamux](https://github.com/hashicorp/yamux/blob/master/spec.md), written in
 Lua. This dissector is capable of decoding Consul's RPC and Gossip communication.
 
 ## Screenshot
@@ -101,10 +101,18 @@ dissector.
 | serf.message.encryption_version | The encryption algorithm used for a Serf Encrypt payload | `serf.message.encryption_version == 1` |
 | serf.message.remaining_payload | The unparsed, encrypted payload of the Serf Encrypt message | `serf.message.remaining_payload` |
 | serf.message.type | The Serf message type | `serf.message.type == HasCRC` |
+| yamux.error_code | The Yamux GoAway error code field value | `yamux.error_code == NormalTermination` |
 | yamux.flags | The flags associated with the Yamux frame | `yamux.flags == SYN` |
-| yamux.length | The length of the payload following the Yamux Data frame | `yamux.length == 999` |
-| yamux.previous_frame | The ID of the previous Yamux frame in this stream | `yamux.previous_frame == 879` |
+| yamux.length | The Yamux length field value | `yamux.length == 999` |
 | yamux.next_frame | The ID of the next Yamux frame in this stream | `yamux.next_frame == 1132` |
+| yamux.payload_length | The length of the payload following the Yamux Data frame | `yamux.payload_length == 1000` |
+| yamux.ping_payload | The Yamux Ping frame payload | `yamux.ping_payload == 0xFEEDCAFE` |
+| yamux.previous_frame | The ID of the previous Yamux frame in this stream | `yamux.previous_frame == 879` |
+| yamux.recv_window_delta | The Yamux Window Update message payload: the receive window size increasing for current Yamux Stream | `yamux.recv_window_delta == 1024` |
 | yamux.stream_id | The ID of a Yamux stream | `yamux.stream_id == 3` |
 | yamux.type | The Yamux packet type | `yamux.type == WindowUpdate` |
 | yamux.version | The Yamux protocol version (currently always zero) | `yamux.version == 0` |
+| yamux.window_size.client.after | The Yamux client window size after message sending | `yamux.window_size.client.after < 1000` |
+| yamux.window_size.client.before | The Yamux client window size before message sending | `yamux.window_size.client.before >= 2000` |
+| yamux.window_size.server.after | The Yamux server window size after message sending | `yamux.window_size.server.after < 3000` |
+| yamux.window_size.server.before | The Yamux server window size before message sending | `yamux.window_size.server.before >= 4000` |

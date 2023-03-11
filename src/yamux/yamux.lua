@@ -68,9 +68,9 @@ end
 -- Used for session termination.
 -- Tracks the reason for termination.
 local GOAWAY_FLAG_MAP = {
-    [0x00] = "Normal termination",
-    [0x01] = "Protocol error",
-    [0x02] = "Internal error",
+    [0x00] = "NormalTermination",
+    [0x01] = "ProtocolError",
+    [0x02] = "InternalError",
 }
 
 --- A useful table of constants
@@ -123,7 +123,7 @@ local yamux_fields = {
     payload_length = ProtoField.uint32("yamux.payload_length", "Payload Length", base.DEC),
     recv_window_delta = ProtoField.uint32("yamux.recv_window_delta", "Receive window delta", base.DEC),
     ping_payload = ProtoField.uint32("yamux.ping_payload", "Ping payload", base.HEX),
-    error_code = ProtoField.uint32("yamux.error_code", "Error code", base.DEC),
+    error_code = ProtoField.uint32("yamux.error_code", "Error code", base.HEX, GOAWAY_FLAG_MAP),
 
     window_size_client_before = ProtoField.uint32("yamux.window_size.client.before", "Client window size (before)", base.DEC),
     window_size_server_before = ProtoField.uint32("yamux.window_size.server.before", "Server window size (before)", base.DEC),
