@@ -202,6 +202,9 @@ end
 -- @function proto_yamux.prefs_changed
 function proto_yamux:prefs_changed()
     dprint2("prefs_changed called")
+    -- Disable the dissector if heuristic detection is disabled.
+    -- The dissector will be re-enabled if the heuristic detection is still
+    -- disabled after processing the preference changes.
     disableDissector()
 
     -- Change debug level
