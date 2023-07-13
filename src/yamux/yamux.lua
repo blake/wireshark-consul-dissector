@@ -150,6 +150,7 @@ local debug_levels = util.debug.levels
 local default_settings = {
     debug_level = debug_levels.DISABLED,
     heuristic_enabled = true, -- Whether heuristic dissection is enabled
+    ports = 443,
 }
 
 local consul_dissector_table = DissectorTable.get("consul.protocol")
@@ -176,17 +177,44 @@ proto_yamux.prefs.heuristic = Pref.bool("Heuristic enabled", default_settings.he
     "Whether heuristic dissection is enabled.")
 proto_yamux.prefs.debug = Pref.enum("Debug level", default_settings.debug_level, "The debug level verbosity",
     util.debug.pref_enum)
+proto_yamux.prefs.ports = Pref.range("Port(s)", default_settings.ports,
+    "Set the TCP port(s) for Yamux, default is 443. That ports are used only with disabled heuristics analysis", 65535)
+
+-- Got from zabbixagent
+local function enableDissector()
+    if not default_settings.heuristic_enabled then
+        DissectorTable.get("tcp.port"):add(default_settings.ports, proto_yamux)
+        -- supports also TLS decryption if the session keys are configured in Wireshark
+        DissectorTable.get("tls.port"):add(default_settings.ports, proto_yamux)
+    end
+end
+-- call it now, because we're enabled by default
+enableDissector()
+
+local function disableDissector()
+    if not default_settings.heuristic_enabled then
+        DissectorTable.get("tcp.port"):remove(default_settings.ports, proto_yamux)
+        DissectorTable.get("tls.port"):remove(default_settings.ports, proto_yamux)
+    end
+end
 
 --- Handle changes to Wireshark preferences for this protocol
 -- @function proto_yamux.prefs_changed
 function proto_yamux:prefs_changed()
     dprint2("prefs_changed called")
+    -- Disable the dissector if heuristic detection is disabled.
+    -- The dissector will be re-enabled if the heuristic detection is still
+    -- disabled after processing the preference changes.
+    disableDissector()
 
     -- Change debug level
     default_settings.debug_level = proto_yamux.prefs.debug
     reset_debug()
 
     default_settings.heuristic_enabled = proto_yamux.prefs.heuristic
+    default_settings.ports = proto_yamux.prefs.ports
+
+    enableDissector()
 end
 
 --- Calls a sub-dissector for the given protocol pattern
@@ -535,3 +563,4 @@ end
 
 -- Register a heuristic dissector for the Yamux protocol
 proto_yamux:register_heuristic("tcp", heuristic_dissect_yamux)
+proto_yamux:register_heuristic("tls", heuristic_dissect_yamux)
