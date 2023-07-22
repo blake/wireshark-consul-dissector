@@ -96,8 +96,10 @@ dissector.
 | serf.label.type | The Serf label type. Only value of 244 is supported. | `serf.label.type == 244` |
 | serf.message.checksum | The checksum value for a Serf HasCRC message | `serf.message.type == HasCRC` |
 | serf.message.compound_length | The number of messages in a Serf Compound message | `serf.message.compound_length == 22` |
-| serf.message.encryption_length | The length of the encrypted payload in the Serf Encrypt message | `serf.message.encrypted_length >= 50` |
+| serf.message.encryption_ciphertext | The encrypted payload in the Serf Encrypt message | `serf.message.ciphertext` |
+| serf.message.encrypted_length | The length of the encrypted payload in the Serf Encrypt message | `serf.message.encrypted_length >= 50` |
 | serf.message.encryption_nonce | The value of the encryption nonce for a Serf Encrypt message | `serf.message.encryption_nonce == 9a8dedabdea9ed61064601c8` |
+| serf.message.encryption_tag | The AES-128 GCM tag / message authentication code (MAC) / integrity check value (ICV) | `serf.message.encryption_tag` |
 | serf.message.encryption_version | The encryption algorithm used for a Serf Encrypt payload | `serf.message.encryption_version == 1` |
 | serf.message.remaining_payload | The unparsed, encrypted payload of the Serf Encrypt message | `serf.message.remaining_payload` |
 | serf.message.type | The Serf message type | `serf.message.type == HasCRC` |
