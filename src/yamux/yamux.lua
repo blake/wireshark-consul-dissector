@@ -21,16 +21,28 @@ local util = require("util")
 -- RPC type
 local rpc_type = "0x04"
 
--- Map Yamux header type to readable name
-local HDR_TYPE_MAP = {
-    [0x00] = "Data",          -- Used to transmit data. May transmit zero length payloads depending on the flags.
-    [0x01] = "WindowUpdate", -- Used to updated the senders receive window size.
-                              -- This is used to implement per-session flow control.
-    [0x02] = "Ping",          -- Used to measure RTT. It can also be used to heart-beat and do keep-alives over TCP.
-    [0x03] = "GoAway",       -- Used to close a session.
+-- Default window value
+-- 256 KB: https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#flow-control
+local window_start_value = 256 * 1024
+
+-- Map Yamux header type to variables
+local hdr_type = {
+    DATA = 0x00,
+    WINDOW_UPDATE = 0x01,
+    PING = 0x02,
+    GO_AWAY = 0x03,
 }
 
 -- Map Yamux header type to readable name
+local HDR_TYPE_MAP = {
+    [hdr_type.DATA] = "Data", -- Used to transmit data. May transmit zero length payloads depending on the flags.
+    [hdr_type.WINDOW_UPDATE] = "WindowUpdate", -- Used to updated the senders receive window size.
+        -- This is used to implement per-session flow control.
+    [hdr_type.PING] = "Ping", -- Used to measure RTT. It can also be used to heart-beat and do keep-alives over TCP.
+    [hdr_type.GO_AWAY] = "GoAway", -- Used to close a session.
+}
+
+-- Map Yamux header flag to readable name
 local HDR_FLAG_MAP = {
     [0x0000] = "None",
     [0x0001] = "SYN", -- Signals the start of a new stream. May be sent with a
@@ -56,9 +68,9 @@ end
 -- Used for session termination.
 -- Tracks the reason for termination.
 local GOAWAY_FLAG_MAP = {
-    [0x00] = "Normal termination",
-    [0x01] = "Protocol error",
-    [0x02] = "Internal error",
+    [0x00] = "NormalTermination",
+    [0x01] = "ProtocolError",
+    [0x02] = "InternalError",
 }
 
 --- A useful table of constants
@@ -108,6 +120,16 @@ local yamux_fields = {
     flags = ProtoField.uint16("yamux.flags", "Flags", base.HEX, HDR_FLAG_MAP),
     stream_id = ProtoField.uint32("yamux.stream_id", "Stream ID", base.DEC),
     length = ProtoField.uint32("yamux.length", "Length", base.DEC),
+    payload_length = ProtoField.uint32("yamux.payload_length", "Payload Length", base.DEC),
+    recv_window_delta = ProtoField.uint32("yamux.recv_window_delta", "Receive window delta", base.DEC),
+    ping_payload = ProtoField.uint32("yamux.ping_payload", "Ping payload", base.HEX),
+    error_code = ProtoField.uint32("yamux.error_code", "Error code", base.HEX, GOAWAY_FLAG_MAP),
+    payload = ProtoField.bytes("yamux.payload", "Data Payload", base.NONE),
+
+    window_size_client_before = ProtoField.uint32("yamux.window_size.client.before", "Client window size (before)", base.DEC),
+    window_size_server_before = ProtoField.uint32("yamux.window_size.server.before", "Server window size (before)", base.DEC),
+    window_size_client_after = ProtoField.uint32("yamux.window_size.client.after", "Client window size (after)", base.DEC),
+    window_size_server_after = ProtoField.uint32("yamux.window_size.server.after", "Server window size (after)", base.DEC),
 
     prev_frame_request = ProtoField.framenum("yamux.previous_frame", "Previous frame (request)", base.NONE,
         frametype.REQUEST),
@@ -125,7 +147,13 @@ proto_yamux.fields = yamux_fields
 -- Fields to retrieve protocol data from the packet tree after dissection
 --
 -- ID of the current TCP stream
+local ip_src = Field.new("ip.src")
+local ip_dst = Field.new("ip.dst")
+local ip6_src = Field.new("ipv6.src")
+local ip6_dst = Field.new("ipv6.dst")
 local stream_index = Field.new("tcp.stream")
+local src_port = Field.new("tcp.srcport")
+local dst_port = Field.new("tcp.dstport")
 local yamux_flags_field = Field.new("yamux.flags")
 local yamux_stream_id_field = Field.new("yamux.stream_id")
 
@@ -265,6 +293,46 @@ local function make_unique_stream_id()
     return string.format("%s-%s", get_stream_index(), yamux_stream_id_field().value)
 end
 
+-- Get the TCP base information
+local function get_tcp_base_info(ip, ip6)
+    if ip then
+        return ip.value
+    end
+    if ip6 then
+        return ip6.value
+    end
+
+    return "<unknown>"
+end
+
+local function get_tcp_port(port)
+    if port then
+        return port.value
+    end
+
+    return 0
+end
+
+-- Get the source address
+-- IP & IPv6 packages are supported
+local function get_src_addr()
+    return string.format("%s:%s", get_tcp_base_info(ip_src(), ip6_src()), get_tcp_port(src_port()))
+end
+
+-- Get the destination address
+-- IP & IPv6 packages are supported
+local function get_dst_addr()
+    return string.format("%s:%s", get_tcp_base_info(ip_dst(), ip6_dst()), get_tcp_port(dst_port()))
+end
+
+--- Constructs a full stream ID for the current packet. This is a combination
+--- of the unique stream ID and source/destination TCP port. It is used to
+--- trace packets through logs
+-- @treturn string A string representing a unique ID for this Yamux stream
+local function make_full_stream_id()
+    return string.format("%s-%s-%s", make_unique_stream_id(), get_src_addr(), get_dst_addr())
+end
+
 --- Returns the expected length of a Yamux header
 -- @treturn number The expected length of a Yamux header
 local function header_length()
@@ -282,10 +350,10 @@ local function is_yamux(tvb)
         return false
     end
 
-    -- Verify the length of the packet is equal to the length of the Yamux
+    -- Verify the length of the packet is not less than the length of the Yamux
     -- header and the first byte (version) is 0, which should indicate that this
     -- is a Yamux stream
-    if buffer_len == header_length() and tvb:range(0, 1):int() == consts.protocol_version then
+    if buffer_len >= header_length() and tvb:range(0, 1):int() == consts.protocol_version then
         return true
     end
 
@@ -301,6 +369,27 @@ local function is_yamux_rpc(tvb)
     local converted_byte = util.number_to_hex(peek_byte)
 
     return converted_byte == rpc_type
+end
+
+--- Test if the Yamux stream is default opened (neither client not server will open it)
+-- @treturn bool True if the stream was opened by default, false otherwise
+local function is_yamux_stream_default_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return yamux_stream_id_field().value == 0
+end
+
+--- Test if the Yamux stream is opened by client
+-- @treturn bool True if the stream was opened by client, false otherwise
+local function is_yamux_stream_client_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return (yamux_stream_id_field().value % 2 == 1) and not is_yamux_stream_default_created()
+end
+
+--- Test if the Yamux stream is opened by server
+-- @treturn bool True if the stream was opened by server, false otherwise
+local function is_yamux_stream_server_created()
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#streamid-field
+    return (yamux_stream_id_field().value % 2 == 0) and not is_yamux_stream_default_created()
 end
 
 --- Set the protocol for future conversations to be Yamux
@@ -322,7 +411,7 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Do not attempt to parse header if provided packets are less than expected
     -- size
-    if yamux_header:captured_len() ~= header_length() then
+    if yamux_header:captured_len() < header_length() then
         return false
     end
 
@@ -331,10 +420,39 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Get the 8-bit version identifier from the header
     subtree:add(fields.version, get_bytes(yamux_header, sizeOf.version))
-    subtree:add(fields.type, get_bytes(yamux_header, sizeOf.type))
+
+    local typeBytes = get_bytes(yamux_header, sizeOf.type)
+    local typeValue = typeBytes:uint()
+    subtree:add(fields.type, typeBytes)
     subtree:add(fields.flags, get_bytes(yamux_header, sizeOf.flags))
     subtree:add(fields.stream_id, get_bytes(yamux_header, sizeOf.stream_id))
-    subtree:add(fields.length, get_bytes(yamux_header, sizeOf.length))
+
+    -- Based on https://github.com/hashicorp/yamux/blob/3d6f54d66fc83411743d3421f7a84a7d348f071c/spec.md#length-field
+    local lenBytes = get_bytes(yamux_header, sizeOf.length)
+    local lenValue = lenBytes:uint()
+    subtree:add(fields.length, lenBytes)
+
+    local payloadLen = 0
+    local windowDelta = 0
+
+    if typeValue == hdr_type.DATA then
+        subtree:add(fields.payload_length, lenBytes):set_generated()
+        payloadLen = lenValue
+    elseif typeValue == hdr_type.WINDOW_UPDATE then
+        subtree:add(fields.recv_window_delta, lenBytes):set_generated()
+        windowDelta = lenValue
+    elseif typeValue == hdr_type.PING then
+        subtree:add(fields.ping_payload, lenBytes):set_generated()
+    elseif typeValue == hdr_type.GO_AWAY then
+        subtree:add(fields.error_code, lenBytes):set_generated()
+    else
+        dprint("Bad packet type", typeValue)
+    end
+
+    -- Decoding data payload
+    if typeValue == hdr_type.DATA and yamux_header:captured_len() >= (header_length() + payloadLen) then
+        subtree:add(fields.payload, get_bytes(yamux_header, payloadLen))
+    end
 
     -- Obtain a few fields that were added to the dissection tree
     local flags = yamux_flags_field().value
@@ -353,6 +471,29 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
     if flags == HDR_FLAG_NAME_MAP.SYN then
         -- This is the start of a new Yamux conversation. Set the protocol.
         set_protocol(pinfo)
+    end
+
+    if is_yamux_stream_default_created() and not (typeValue == hdr_type.PING or typeValue == hdr_type.GO_AWAY) then
+        dprint("Default opened stream cannot be with type", typeValue)
+
+        -- TODO: add expert info
+    end
+
+    -- Determine client/server tcp ports for window calculation
+    local disable_window_calc_logic = false
+    if flags == HDR_FLAG_NAME_MAP.SYN then
+        if get_src_addr() == get_dst_addr() then
+            disable_window_calc_logic = true
+            dprint("Source address", get_src_addr(), "is equal to destination address", get_dst_addr(), ". No possibility to determine Yamux client/server direction. Window calculation logic will be disabled")
+        elseif is_yamux_stream_default_created() then
+            disable_window_calc_logic = true
+            dprint("Default opened stream cannot be opened")
+            -- TODO: add expert info
+        elseif is_yamux_stream_server_created() then
+            yamux_stream_info[current_stream_id].server_address = get_src_addr()
+        else
+            yamux_stream_info[current_stream_id].server_address = get_dst_addr()
+        end
     end
 
     -- Get the current stream's mapping of frame numbers to previous and next
@@ -410,6 +551,45 @@ local function parse_yamux(subtree, pinfo, fields, yamux_header)
 
     -- Update the last frame number that was processed by this dissector
     yamux_stream_info[current_stream_id].last_frame = current_frame
+
+    if not (disable_window_calc_logic or is_yamux_stream_default_created()) then
+        -- Window values recalculation
+        local new_server_window_size = window_start_value
+        local new_client_window_size = window_start_value
+
+        if previous_frame then
+            if yamux_stream_info[current_stream_id].client_window_size and yamux_stream_info[current_stream_id].server_window_size then
+                -- Use prev values, if prev frame is presented
+                new_server_window_size = yamux_stream_info[current_stream_id].server_window_size
+                new_client_window_size = yamux_stream_info[current_stream_id].client_window_size
+            else
+                dprint("Yamux Stream", make_full_stream_id(), "prev frame was presented, but no window size is available")
+                -- TODO: add expert info
+            end
+        end
+
+        subtree:add(fields.window_size_server_before, new_server_window_size):set_generated()
+        subtree:add(fields.window_size_client_before, new_client_window_size):set_generated()
+
+        if get_src_addr() == yamux_stream_info[current_stream_id].server_address then
+            dprint2("Packet", make_full_stream_id(), "is server one")
+            new_server_window_size = new_server_window_size + windowDelta
+            new_client_window_size = new_client_window_size - payloadLen
+        elseif get_dst_addr() == yamux_stream_info[current_stream_id].server_address then
+            dprint2("Packet", make_full_stream_id(), "is client one")
+            new_client_window_size = new_client_window_size + windowDelta
+            new_server_window_size = new_server_window_size - payloadLen
+        else
+            dprint("Yamux Stream", make_full_stream_id(), "packets were detected without SYN flag")
+            -- TODO: add expert info
+        end
+
+        yamux_stream_info[current_stream_id].server_window_size = new_server_window_size
+        yamux_stream_info[current_stream_id].client_window_size = new_client_window_size
+
+        subtree:add(fields.window_size_server_after, new_server_window_size):set_generated()
+        subtree:add(fields.window_size_client_after, new_client_window_size):set_generated()
+    end
 
     return true
 end
