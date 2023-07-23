@@ -46,11 +46,14 @@
           "yamux.type": "0x00",
           "yamux.flags": "0x0000",
           "yamux.stream_id": "1",
-          "yamux.length": "38"
+          "yamux.length": "38",
+          "yamux.payload_length": "38"
         }
       }
     }
-  },
+  }Lua (Yamux): Yamux Stream 0-1-192.0.20.100:8300-192.0.2.200:8300 prev frame was presented, but no window size is available
+Lua (Yamux): Yamux Stream 0-1-192.0.20.100:8300-192.0.2.200:8300 packets were detected without SYN flag
+,
   {
     "_type": "doc",
     "_score": null,
@@ -75,11 +78,17 @@
           "yamux.flags": "0x0000",
           "yamux.stream_id": "1",
           "yamux.length": "38",
-          "yamux.previous_frame": "2"
+          "yamux.payload_length": "38",
+          "yamux.previous_frame": "2",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
-  },
+  }Lua (Yamux): Packet 0-1-192.0.20.100:8300-192.0.2.200:8300 is client one
+,
   {
     "_type": "doc",
     "_score": null,
@@ -104,11 +113,17 @@
           "yamux.flags": "0x0001",
           "yamux.stream_id": "1",
           "yamux.length": "0",
-          "yamux.previous_frame": "3"
+          "yamux.recv_window_delta": "0",
+          "yamux.previous_frame": "3",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
-  },
+  }Lua (Yamux): Packet 0-1-192.0.20.100:8300-192.0.2.200:8300 is client one
+,
   {
     "_type": "doc",
     "_score": null,
@@ -133,11 +148,17 @@
           "yamux.flags": "0x0002",
           "yamux.stream_id": "1",
           "yamux.length": "0",
-          "yamux.previous_frame": "4"
+          "yamux.recv_window_delta": "0",
+          "yamux.previous_frame": "4",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
-  },
+  }Lua (Yamux): Packet 0-1-192.0.20.100:8300-192.0.2.200:8300 is client one
+,
   {
     "_type": "doc",
     "_score": null,
@@ -162,11 +183,17 @@
           "yamux.flags": "0x0001",
           "yamux.stream_id": "1",
           "yamux.length": "0",
-          "yamux.previous_frame": "5"
+          "yamux.recv_window_delta": "0",
+          "yamux.previous_frame": "5",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
-  },
+  }Lua (Yamux): Packet 0-1-192.0.20.100:8300-192.0.2.200:8300 is client one
+,
   {
     "_type": "doc",
     "_score": null,
@@ -191,7 +218,12 @@
           "yamux.flags": "0x0002",
           "yamux.stream_id": "1",
           "yamux.length": "0",
-          "yamux.previous_frame": "6"
+          "yamux.recv_window_delta": "0",
+          "yamux.previous_frame": "6",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
@@ -219,11 +251,14 @@
           "yamux.type": "0x01",
           "yamux.flags": "0x0004",
           "yamux.stream_id": "3",
-          "yamux.length": "0"
+          "yamux.length": "0",
+          "yamux.recv_window_delta": "0"
         }
       }
     }
-  },
+  }Lua (Yamux): Yamux Stream 0-3-192.0.20.100:8300-192.0.2.200:8300 prev frame was presented, but no window size is available
+Lua (Yamux): Yamux Stream 0-3-192.0.20.100:8300-192.0.2.200:8300 packets were detected without SYN flag
+,
   {
     "_type": "doc",
     "_score": null,
@@ -248,11 +283,17 @@
           "yamux.flags": "0x0004",
           "yamux.stream_id": "3",
           "yamux.length": "0",
-          "yamux.previous_frame": "8"
+          "yamux.recv_window_delta": "0",
+          "yamux.previous_frame": "8",
+          "yamux.window_size.server.before": "262144",
+          "yamux.window_size.client.before": "262144",
+          "yamux.window_size.server.after": "262144",
+          "yamux.window_size.client.after": "262144"
         }
       }
     }
-  },
+  }Lua (Yamux): Default opened stream cannot be opened
+,
   {
     "_type": "doc",
     "_score": null,
@@ -276,7 +317,8 @@
           "yamux.type": "0x02",
           "yamux.flags": "0x0001",
           "yamux.stream_id": "0",
-          "yamux.length": "4"
+          "yamux.length": "4",
+          "yamux.ping_payload": "0x00000004"
         }
       }
     }
@@ -305,11 +347,13 @@
           "yamux.flags": "0x0002",
           "yamux.stream_id": "0",
           "yamux.length": "4",
+          "yamux.ping_payload": "0x00000004",
           "yamux.previous_frame": "10"
         }
       }
     }
-  },
+  }Lua (Yamux): Default opened stream cannot be opened
+,
   {
     "_type": "doc",
     "_score": null,
@@ -334,6 +378,7 @@
           "yamux.flags": "0x0001",
           "yamux.stream_id": "0",
           "yamux.length": "4",
+          "yamux.ping_payload": "0x00000004",
           "yamux.previous_frame": "11"
         }
       }
@@ -363,6 +408,7 @@
           "yamux.flags": "0x0002",
           "yamux.stream_id": "0",
           "yamux.length": "4",
+          "yamux.ping_payload": "0x00000004",
           "yamux.previous_frame": "12"
         }
       }
