@@ -70,6 +70,7 @@ local sizeOf = {
     encrypt_length = 4,
     encrypt_nonce = 12,
     encrypt_version = 1,
+    encrypt_tag = 16,
     label_length = 1,
     message_type = 1,
 }
@@ -102,8 +103,10 @@ local serf_fields = {
     encryption_version = ProtoField.uint8("serf.message.encryption_version", "Encryption version", base.DEC,
         ENCRYPTION_VERSION_MAP),
     encryption_nonce = ProtoField.bytes("serf.message.encryption_nonce", "Encryption nonce", base.NONE),
-    remaining_payload = ProtoField.bytes("serf.message.remaining_payload", "Remaining Payload", base.NONE,
-        "The remaining unparsed payload"),
+    encryption_ciphertext = ProtoField.bytes("serf.message.encryption_ciphertext", "Cipher text", base.NONE,
+        "The encrypted cipher text"),
+    encryption_tag = ProtoField.bytes("serf.message.encryption_tag", "GCM tag", base.NONE,
+        "The encrypted cipher text"),
     encrypted_length = ProtoField.uint8("serf.message.encrypted_length", "Length", base.DEC),
 }
 
@@ -114,6 +117,7 @@ proto_serf.fields = serf_fields
 local serf_checksum_field = Field.new("serf.message.checksum")
 local serf_compound_length_field = Field.new("serf.message.compound_length")
 local serf_encrypted_length_field = Field.new("serf.message.encrypted_length")
+local serf_encryption_ciphertext_field = Field.new("serf.message.encryption_ciphertext")
 local serf_encryption_version_field = Field.new("serf.message.encryption_version")
 local serf_label_length_field = Field.new("serf.label.length")
 
@@ -189,26 +193,57 @@ local function parse_compound_msg(tvb, subtree, serf_fields)
     return lengths
 end
 
---- Parse an encrypted Serf message
+--- Parse an encrypted TCP Serf message
 -- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
 -- @tparam TreeItem subtree An object representing the subtree to append packet details
 -- @tparam {ProtoField,...} fields Table containing ProtoField objects for this protocol
-local function parse_encrypt_msg(tvb, subtree, serf_fields)
-    -- TODO: Fix parsing of encrypted payload length
+local function parse_tcp_encrypt_msg(tvb, subtree, serf_fields)
     subtree:add(serf_fields.encrypted_length, get_bytes(tvb, sizeOf.encrypt_length))
     subtree:add(serf_fields.encryption_version, get_bytes(tvb, sizeOf.encrypt_version))
     subtree:add(serf_fields.encryption_nonce, get_bytes(tvb, sizeOf.encrypt_nonce))
 
     local encryption_version_field = serf_encryption_version_field()
 
+    -- If the packet is encrypted using AES-GCM 128 with no padding (version 1)
     if encryption_version_field.value == 1 then
-        subtree:add(serf_fields.remaining_payload, tvb(pos))
+        local ciphertext_length = serf_encrypted_length_field().value - encryption_version_field.value - sizeOf.encrypt_nonce - sizeOf.encrypt_tag
+
+        subtree:add(serf_fields.encryption_ciphertext, get_bytes(tvb, ciphertext_length))
+        subtree:add(serf_fields.encryption_tag, get_bytes(tvb, sizeOf.encrypt_tag))
     end
 
     local encrypted_header_len =
-        sizeOf.message_type + serf_encrypted_length_field().len + encryption_version_field.len + sizeOf.encrypt_nonce
+        sizeOf.message_type + serf_encrypted_length_field().len + encryption_version_field.len + sizeOf.encrypt_nonce + serf_encryption_ciphertext_field().len + sizeOf.encrypt_tag
     subtree:set_len(encrypted_header_len)
 
+end
+
+--- Parse an encrypted UDP Serf message
+-- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
+-- @tparam TreeItem subtree An object representing the subtree to append packet details
+-- @tparam {ProtoField,...} fields Table containing ProtoField objects for this protocol
+local function parse_udp_encrypt_msg(tvb, subtree, serf_fields)
+    -- Add the message to the packet tree
+    local encrypt_message_type = 10
+    local message_tree = subtree:add(proto_serf, tvb(),
+        construct_serf_message_name(encrypt_message_type))
+
+    message_tree:add(serf_fields.encryption_version, get_bytes(tvb, sizeOf.encrypt_version))
+    message_tree:add(serf_fields.encryption_nonce, get_bytes(tvb, sizeOf.encrypt_nonce))
+
+    local encryption_version_field = serf_encryption_version_field()
+
+    -- If the packet is encrypted using AES-GCM 128 with no padding (version 1)
+    if encryption_version_field.value == 1 then
+        local ciphertext_length = tvb:len() - encryption_version_field.value - sizeOf.encrypt_nonce - sizeOf.encrypt_tag
+
+        message_tree:add(serf_fields.encryption_ciphertext, get_bytes(tvb, ciphertext_length))
+        message_tree:add(serf_fields.encryption_tag, get_bytes(tvb, sizeOf.encrypt_tag))
+    end
+
+    local encrypted_header_len =
+        encryption_version_field.len + sizeOf.encrypt_nonce + serf_encryption_ciphertext_field().len + sizeOf.encrypt_tag
+    message_tree:set_len(encrypted_header_len)
 end
 
 --- Parse a Serf message with a CRC
@@ -228,6 +263,7 @@ local debug_levels = util.debug.levels
 
 local default_settings = {
     debug_level = debug_levels.DISABLED,
+    encryption_enabled = false,
     lan_port = 8301,
     wan_port = 8302,
 }
@@ -256,6 +292,7 @@ proto_serf.prefs.wan_port = Pref.uint("Serf WAN port number", default_settings.w
     "The TCP/UDP port number for Consul's Serf WAN traffic")
 proto_serf.prefs.debug = Pref.enum("Debug level", default_settings.debug_level, "The debug level verbosity",
     util.debug.pref_enum)
+proto_serf.prefs.encryption_enabled = Pref.bool("Encryption enabled", default_settings.encrypted, "Whether Serf packets are encrypted")
 
 --- Initialization function for this protocol
 --  Adds this protocol to the 'consul.protocol' dissector table
@@ -277,7 +314,10 @@ function proto_serf.prefs_changed()
     default_settings.debug_level = proto_serf.prefs.debug
     reset_debug()
 
+    -- Set whether packets are encrypted or not
     -- Handle Serf LAN port change
+    default_settings.encryption_enabled = proto_serf.prefs.encryption_enabled
+
     if default_settings.lan_port ~= proto_serf.prefs.lan_port then
         -- remove old one, if not 0
         if default_settings.lan_port ~= 0 then
@@ -341,6 +381,30 @@ local function get_compound_message_length(tvb, _, offset)
     return total_length
 end
 
+--- Determine the length of an encrypted message
+--
+-- @tparam Tvb tvb A Testy Virtual(-izable) Buffer
+-- @tparam Pinfo pinfo An object containing packet information
+-- @tparam number offset An offset number of the index of the first byte of the PDU
+-- @treturn number The number of bytes processed by this dissector
+local function get_encrypt_message_length(tvb, _, offset)
+    -- Start the cursor the position after the message type
+    local cursor = 1
+    local total_msg_length = tvb:range(cursor, sizeOf.encrypt_length):uint()
+
+    cursor = cursor + sizeOf.encrypt_length
+
+    -- Ensure there are enough bytes to read the number of parts
+    local current_packet_length = tvb:len(cursor)
+
+    if current_packet_length < total_msg_length then
+        dprint("This encrypt packet is " .. current_packet_length .. "and does not meet the total message length of " .. total_msg_length)
+        return 0
+    end
+
+    return current_packet_length
+end
+
 -- Parses a Serf message
 -- @function dissect_message
 --
@@ -352,10 +416,13 @@ local function dissect_message(tvb, pinfo, tree)
     -- Reset cursor position
     pos = 0
 
+    -- Get the length of the packet
+    local buffer_length = tvb:captured_len()
+
     -- Return if this packet is a segment in a reassembled frame, and the size
     -- of this packet does not equal the length of the reassembled frame
     local tcp_pdu_size = tcp_pdu_size_field()
-    if tcp_pdu_size ~= nil and tvb:captured_len() ~= tcp_pdu_size.value then
+    if tcp_pdu_size ~= nil and buffer_length ~= tcp_pdu_size.value then
         return
     end
 
@@ -375,6 +442,18 @@ local function dissect_message(tvb, pinfo, tree)
 
     local message_type = get_bytes(tvb, sizeOf.message_type)
     local message_type_int = message_type:uint()
+
+    -- If the UDP Serf packets are encrypted, it is not possible to decrypt and
+    -- decode packets with this dissector.
+    -- Parse the known headers for the encrypted UDP message
+    if default_settings.encryption_enabled and pinfo.port_type == 3 and (message_type_int == 0 or message_type_int == 1) then
+        -- Reset the cursor to zero because the first byte holds the encryption version,
+        -- not the message type.
+        pos = 0
+
+        parse_udp_encrypt_msg(tvb, serf_subtree, serf_fields)
+        return buffer_length
+    end
 
     if not MSG_TYPE_MAP[message_type_int] then
         -- This packet does not appear to be a Serf packet
@@ -397,8 +476,8 @@ local function dissect_message(tvb, pinfo, tree)
 
     -- Compare the integer value of the retrieved byte to the message type name
     -- table. This comparison must always be done using the most recently parsed
-    -- message type, not the Fieldinfo object for the message type field because
-    -- the Fieldinfo object is not updated when looping back to decode embedded
+    -- message type, not the FieldInfo object for the message type field because
+    -- the FieldInfo object is not updated when looping back to decode embedded
     -- messages.
     if message_type_int == MSG_TYPE_NAME_MAP.Label then
         -- Parse the label length
@@ -414,7 +493,7 @@ local function dissect_message(tvb, pinfo, tree)
         goto process_serf_message
     elseif message_type_int == MSG_TYPE_NAME_MAP.Encrypt then
         -- This is an encrypted message. Process as much of the message as possible
-        parse_encrypt_msg(tvb, message_tree, serf_fields)
+        parse_tcp_encrypt_msg(tvb, message_tree, serf_fields)
 
         return buffer_length
     elseif message_type_int == MSG_TYPE_NAME_MAP.HasCRC then
@@ -424,7 +503,10 @@ local function dissect_message(tvb, pinfo, tree)
         -- Restart message processing to decode the checksummed message
         goto process_serf_message
     elseif message_type_int == MSG_TYPE_NAME_MAP.Compound then
-        compound_message_lengths = parse_compound_msg(tvb, message_tree, serf_fields)
+        local result = parse_compound_msg(tvb, message_tree, serf_fields)
+        if result ~= nil then
+            compound_message_lengths = result
+        end
 
         -- Restart message processing to decode the list of compound messages
         goto process_serf_message
@@ -495,20 +577,25 @@ function proto_serf.dissector(tvb, pinfo, tree)
         return 0
     end
 
-    -- Compound Messages can be fragmented across multiple packets. First check
-    -- if this is a compound message, and if so, determine the length of the
-    -- message. Once confident the entire payload has been received, dissect the
-    -- packet.
-
-    -- If the packet is a TCP packet
+    -- If the packet is an unencrypted TCP packet
     if pinfo.port_type == 2 then
         local message_type = tvb:range(0, sizeOf.message_type):uint()
 
+        -- Compound Messages can be fragmented across multiple packets. First check
+        -- if this is a compound message, and if so, determine the length of the
+        -- message. Once confident the entire payload has been received, dissect the
+        -- packet.
         if message_type == MSG_TYPE_NAME_MAP.Compound then
             -- Call dissect_tcp_pdus to first reassemble the packet, if
             -- fragmented, before dissecting the payload
             local min_header_size = 2
             return dissect_tcp_pdus(tvb, tree, min_header_size, get_compound_message_length, dissect_message)
+        -- Encrypted Serf TCP packets have a message type field, whereas encrypted UDP
+        -- packets do not.
+        -- Ensure this is a TCP packet before attempting to dissect the PDU.
+        elseif pinfo.port_type == 2 and message_type == MSG_TYPE_NAME_MAP.Encrypt then
+            local min_header_size = 49
+            return dissect_tcp_pdus(tvb, tree, min_header_size, get_encrypt_message_length, dissect_message)
         end
     end
 
